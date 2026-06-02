@@ -15,9 +15,14 @@ create table if not exists public.coworking_attendance (
   user_id    uuid not null references public.profiles(id) on delete cascade,
   date       date not null,
   source     text not null default 'manual' check (source in ('manual', 'pattern')),
+  dismissed  boolean not null default false,
   created_at timestamptz not null default now(),
   primary key (user_id, date)
 );
+
+-- Backfill for existing installs.
+alter table public.coworking_attendance
+  add column if not exists dismissed boolean not null default false;
 
 create index if not exists coworking_attendance_date_idx
   on public.coworking_attendance(date);

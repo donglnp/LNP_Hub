@@ -54,7 +54,7 @@ export default function Play() {
         supabaseHub.from("profiles").select("id, full_name, avatar_url"),
         supabaseHub
           .from("coworking_attendance")
-          .select("user_id, date, source")
+          .select("user_id, date, source, dismissed")
           .gte("date", from)
           .lt("date", to),
         supabaseHub
@@ -125,6 +125,7 @@ export default function Play() {
   const attendanceByDate = useMemo(() => {
     const map = {};
     for (const a of attendance) {
+      if (a.dismissed) continue;
       if (!map[a.date]) map[a.date] = [];
       map[a.date].push(a);
     }
@@ -136,18 +137,35 @@ export default function Play() {
     setBusyDate(iso);
     const mine = attendance.find((a) => a.user_id === user.id && a.date === iso);
     try {
-      if (mine) {
+      if (mine && !mine.dismissed) {
+        // Soft-dismiss: keep the row as a tombstone so pattern auto-fill
+        // doesn't re-insert it on the next load.
         const { error } = await supabaseHub
           .from("coworking_attendance")
-          .delete()
+          .update({ dismissed: true })
           .eq("user_id", user.id)
           .eq("date", iso);
         if (error) throw error;
         setAttendance((prev) =>
-          prev.filter((a) => !(a.user_id === user.id && a.date === iso))
+          prev.map((a) =>
+            a.user_id === user.id && a.date === iso ? { ...a, dismissed: true } : a
+          )
+        );
+      } else if (mine && mine.dismissed) {
+        // Un-dismiss existing row.
+        const { error } = await supabaseHub
+          .from("coworking_attendance")
+          .update({ dismissed: false })
+          .eq("user_id", user.id)
+          .eq("date", iso);
+        if (error) throw error;
+        setAttendance((prev) =>
+          prev.map((a) =>
+            a.user_id === user.id && a.date === iso ? { ...a, dismissed: false } : a
+          )
         );
       } else {
-        const row = { user_id: user.id, date: iso, source: "manual" };
+        const row = { user_id: user.id, date: iso, source: "manual", dismissed: false };
         const { error } = await supabaseHub
           .from("coworking_attendance")
           .insert(row);
