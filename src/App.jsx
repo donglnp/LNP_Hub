@@ -12,6 +12,7 @@ const WorldCupGame = lazy(() => import("./games/wc"));
 const WellnessChallenge = lazy(() => import("./games/wellness-challenge"));
 const LuckyWheel = lazy(() => import("./games/lucky-wheel"));
 const SecretSanta = lazy(() => import("./games/secret-santa"));
+const CoworkingDay = lazy(() => import("./games/coworking-day"));
 const AdminLayout = lazy(() => import("./pages/admin/AdminLayout"));
 const WellnessAdmin = lazy(() => import("./pages/admin/WellnessAdmin"));
 const WellnessEntriesTab = lazy(() =>
@@ -78,6 +79,14 @@ export default function App() {
                 element={
                   <Suspense fallback={<GameFallback />}>
                     <SecretSanta />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/coworking-day/*"
+                element={
+                  <Suspense fallback={<GameFallback />}>
+                    <CoworkingDay />
                   </Suspense>
                 }
               />

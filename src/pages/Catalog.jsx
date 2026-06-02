@@ -57,6 +57,14 @@ export default function Catalog() {
       accent: "red",
     },
     {
+      slug: "coworking-day",
+      name: t("catalog.coworking_name"),
+      description: t("catalog.coworking_desc"),
+      path: "/coworking-day",
+      icon: "🏢",
+      accent: "blue",
+    },
+    {
       slug: "secret-santa",
       name: t("catalog.santa_name"),
       description: t("catalog.santa_desc"),

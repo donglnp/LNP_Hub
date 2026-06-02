@@ -1307,6 +1307,90 @@ const dict = {
     vi: "Đăng ký điều ước và trao quà bí mật.",
     ja: "ウィッシュリストを書いて、秘密のプレゼント交換。"
   },
+
+  // ---------- Coworking day ----------
+  "catalog.coworking_name": {
+    en: "Coworking day",
+    vi: "Coworking day",
+    ja: "コワーキングデー",
+  },
+  "catalog.coworking_desc": {
+    en: "Mark the days you'll be in the office so teammates can come in together.",
+    vi: "Đánh dấu ngày lên cty để mọi người tự rủ nhau lên cùng.",
+    ja: "出社する日を登録して、みんなで一緒にオフィスへ。",
+  },
+  "coworking.brand_tag": { en: "Coworking", vi: "Coworking", ja: "コワーキング" },
+  "coworking.tag": {
+    en: "◆ Coworking day",
+    vi: "◆ Ngày lên cty",
+    ja: "◆ コワーキングデー",
+  },
+  "coworking.title": {
+    en: "Who's in the office?",
+    vi: "Ai lên cty ngày nào?",
+    ja: "オフィスには誰がいる？",
+  },
+  "coworking.tagline": {
+    en: "Pick the days you'll be in. See who else is coming and plan a coworking day together.",
+    vi: "Chọn ngày bạn lên cty. Xem ai cũng lên ngày đó để rủ nhau lên cùng.",
+    ja: "出社する日を選び、同じ日に来る人を見て、一緒に作業する日を計画しましょう。",
+  },
+  "coworking.this_week": { en: "This week", vi: "Tuần này", ja: "今週" },
+  "coworking.next_week": { en: "Next week", vi: "Tuần sau", ja: "来週" },
+  "coworking.prev_month": { en: "Prev", vi: "Trước", ja: "前月" },
+  "coworking.next_month": { en: "Next", vi: "Sau", ja: "次月" },
+  "coworking.empty_day": { en: "—", vi: "—", ja: "—" },
+  "coworking.empty_day_long": {
+    en: "No one has signed up yet. Be the first!",
+    vi: "Chưa ai đăng ký. Bạn đi đầu nhé!",
+    ja: "まだ誰も登録していません。最初の一人になりましょう！",
+  },
+  "coworking.count_people": {
+    en: "{n} people",
+    vi: "{n} người",
+    ja: "{n}人",
+  },
+  "coworking.btn_join": {
+    en: "I'll be in this day",
+    vi: "Tôi cũng lên ngày này",
+    ja: "この日に出社する",
+  },
+  "coworking.btn_leave": {
+    en: "Remove me from this day",
+    vi: "Bỏ ngày này",
+    ja: "この日をやめる",
+  },
+  "coworking.pattern_title": {
+    en: "Repeating schedule",
+    vi: "Lịch lặp lại",
+    ja: "繰り返しスケジュール",
+  },
+  "coworking.pattern_desc": {
+    en: "Pick weekdays — auto-fills the next 4 weeks. Override single days anytime.",
+    vi: "Chọn các thứ trong tuần — tự điền 4 tuần tới. Vẫn bỏ/sửa từng ngày được.",
+    ja: "曜日を選ぶと、向こう4週間が自動入力されます。個別の日はいつでも変更可能。",
+  },
+  "coworking.pattern_save": {
+    en: "Save pattern",
+    vi: "Lưu lịch lặp",
+    ja: "パターンを保存",
+  },
+  "coworking.tips_title": { en: "Tips", vi: "Mẹo", ja: "ヒント" },
+  "coworking.tip_1": {
+    en: "Click any day to see who's coming and join in.",
+    vi: "Bấm vào ngày bất kỳ để xem ai lên và tham gia.",
+    ja: "日付をクリックすると、出社する人が見えます。",
+  },
+  "coworking.tip_2": {
+    en: "Set a repeating pattern to skip manual ticking each week.",
+    vi: "Đặt lịch lặp để khỏi phải tick lại mỗi tuần.",
+    ja: "繰り返しパターンを設定すれば、毎週のチェックが不要に。",
+  },
+  "coworking.tip_3": {
+    en: "Found a busy day? Hop on so the team has critical mass!",
+    vi: "Thấy ngày nào đông là vào ngay để team đủ vui!",
+    ja: "盛り上がる日があれば、ぜひ参加して仲間を増やそう！",
+  },
 };
 
 export function localeOf(lang) {
