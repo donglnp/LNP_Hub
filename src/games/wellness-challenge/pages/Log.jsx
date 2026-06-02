@@ -24,6 +24,7 @@ export default function Log() {
   const [errors, setErrors] = useState({});
   const [saving, setSaving] = useState(false);
   const [topError, setTopError] = useState(null);
+  const [showUploadHelp, setShowUploadHelp] = useState(false);
 
   function set(k, v) {
     setForm((f) => ({ ...f, [k]: v }));
@@ -193,22 +194,28 @@ export default function Log() {
           </Field>
         )}
 
-        <Field label={t("wc.log_field_photo_before")}>
+        <Field
+          label={t("wc.log_field_photo_before")}
+          onHelp={() => setShowUploadHelp(true)}
+        >
           <input
             type="url"
             value={form.photo_before_url}
             onChange={(e) => set("photo_before_url", e.target.value)}
-            placeholder="https://…/before.jpg"
+            placeholder="https://drive.google.com/…"
             className="input"
           />
         </Field>
 
-        <Field label={t("wc.log_field_photo_after")}>
+        <Field
+          label={t("wc.log_field_photo_after")}
+          onHelp={() => setShowUploadHelp(true)}
+        >
           <input
             type="url"
             value={form.photo_after_url}
             onChange={(e) => set("photo_after_url", e.target.value)}
-            placeholder="https://…/after.jpg"
+            placeholder="https://drive.google.com/…"
             className="input"
           />
         </Field>
@@ -241,21 +248,94 @@ export default function Log() {
           </button>
         </footer>
       </form>
+      {showUploadHelp && (
+        <UploadHelpModal onClose={() => setShowUploadHelp(false)} />
+      )}
     </div>
   );
 }
 
-function Field({ label, children, error }) {
+function Field({ label, children, error, onHelp }) {
   return (
     <label className="block">
-      <span className="block text-[11px] tracking-[0.2em] uppercase text-arena-muted mb-2">
+      <span className="flex items-center gap-2 text-[11px] tracking-[0.2em] uppercase text-arena-muted mb-2">
         {label}
+        {onHelp && (
+          <button
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              onHelp();
+            }}
+            className="inline-flex h-4 w-4 items-center justify-center rounded-full border border-arena-border text-[10px] text-arena-muted hover:text-arena-text hover:border-arena-text"
+            aria-label="Help"
+          >
+            ?
+          </button>
+        )}
       </span>
       {children}
       {error && (
         <span className="block mt-1 text-[11px] text-arena-red">{error}</span>
       )}
     </label>
+  );
+}
+
+function UploadHelpModal({ onClose }) {
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4"
+      onClick={onClose}
+    >
+      <div
+        className="w-full max-w-md rounded-lg border border-arena-border bg-arena-surface p-6"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <h2 className="font-display text-xl font-semibold mb-3">
+          Hướng dẫn upload hình lên Google Drive
+        </h2>
+        <ol className="text-sm text-arena-muted space-y-2 list-decimal list-inside">
+          <li>
+            Mở{" "}
+            <a
+              href="https://drive.google.com"
+              target="_blank"
+              rel="noreferrer"
+              className="text-arena-amber hover:underline"
+            >
+              drive.google.com
+            </a>{" "}
+            và đăng nhập bằng tài khoản Google của bạn.
+          </li>
+          <li>
+            Bấm <span className="text-arena-text">Mới → Tải tệp lên</span> và
+            chọn ảnh cần upload.
+          </li>
+          <li>
+            Sau khi tải xong, chuột phải vào ảnh →{" "}
+            <span className="text-arena-text">Chia sẻ</span>.
+          </li>
+          <li>
+            Trong mục <span className="text-arena-text">Quyền truy cập chung</span>,
+            đổi sang <span className="text-arena-text">Bất kỳ ai có đường liên kết</span>.
+          </li>
+          <li>
+            Bấm <span className="text-arena-text">Sao chép đường liên kết</span>{" "}
+            rồi dán vào ô nhập ở đây.
+          </li>
+        </ol>
+        <div className="mt-5 flex justify-end">
+          <button
+            type="button"
+            onClick={onClose}
+            className="btn btn-primary"
+          >
+            Đóng
+          </button>
+        </div>
+      </div>
+    </div>
   );
 }
 
