@@ -158,7 +158,7 @@ export function sumKcalThisWeek(entries, now = new Date()) {
   return entries
     .filter((e) => {
       const t = new Date(e.entry_date || e.date).getTime();
-      return t >= start && t <= end && (e.status ?? "approved") !== "rejected";
+      return t >= start && t <= end && (e.status ?? "approved") === "approved";
     })
     .reduce((sum, e) => sum + (e.kcal || 0), 0);
 }
@@ -173,7 +173,7 @@ export function sumKcalThisMonth(entries, now = new Date()) {
       return (
         d.getMonth() === m &&
         d.getFullYear() === y &&
-        (e.status ?? "approved") !== "rejected"
+        (e.status ?? "approved") === "approved"
       );
     })
     .reduce((sum, e) => sum + (e.kcal || 0), 0);
@@ -184,7 +184,7 @@ export function sumKcalInMonth(entries, monthNum) {
     .filter((e) => {
       const d = new Date(e.entry_date || e.date);
       return (
-        d.getMonth() + 1 === monthNum && (e.status ?? "approved") !== "rejected"
+        d.getMonth() + 1 === monthNum && (e.status ?? "approved") === "approved"
       );
     })
     .reduce((sum, e) => sum + (e.kcal || 0), 0);
@@ -192,14 +192,14 @@ export function sumKcalInMonth(entries, monthNum) {
 
 export function sumKcalTotal(entries) {
   return entries
-    .filter((e) => (e.status ?? "approved") !== "rejected")
+    .filter((e) => (e.status ?? "approved") === "approved")
     .reduce((sum, e) => sum + (e.kcal || 0), 0);
 }
 
 export function weeksMetKpi(entries, gender) {
   const byWeek = new Map();
   for (const e of entries) {
-    if ((e.status ?? "approved") === "rejected") continue;
+    if ((e.status ?? "approved") !== "approved") continue;
     const d = new Date(e.entry_date || e.date);
     if (d < PROGRAM.startDate || d > PROGRAM.endDate) continue;
     const key = weekKey(d);
