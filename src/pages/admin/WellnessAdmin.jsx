@@ -1,35 +1,28 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
-import { useAuth } from "../lib/AuthContext";
+import { NavLink, Outlet, useOutletContext } from "react-router-dom";
+import { useAuth } from "../../lib/AuthContext";
 import {
   fetchAllEntries,
   fetchWellnessProfiles,
   upsertEntry,
   deleteEntry,
   updateProfileMeta,
-} from "../games/wellness-challenge/lib/wellness";
+} from "../../games/wellness-challenge/lib/wellness";
 import {
   DEVICES,
   EXERCISE_TYPES,
   findDevice,
   findExercise,
   formatDate,
-} from "../games/wellness-challenge/lib/data";
-
-const EVENTS = [
-  { id: "wellness-challenge", label: "Wellness Challenge", icon: "💪", accent: "amber" },
-  { id: "wc", label: "World Cup", icon: "⚽", accent: "green" },
-];
+} from "../../games/wellness-challenge/lib/data";
 
 const WC_TABS = [
   { id: "entries", label: "Buổi tập" },
   { id: "users", label: "Người tham gia" },
 ];
 
-export default function Admin() {
+export default function WellnessAdmin() {
   const { user, refreshProfile } = useAuth();
-  const [section, setSection] = useState("wellness-challenge"); // event id | "admins"
-  const [wcTab, setWcTab] = useState("entries");
   const [profiles, setProfiles] = useState([]);
   const [entries, setEntries] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -68,87 +61,48 @@ export default function Admin() {
   }
 
   return (
-    <div className="min-h-screen bg-arena-bg text-arena-text">
-      <header className="border-b border-arena-border bg-arena-bg/80 backdrop-blur sticky top-0 z-30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center gap-3">
-          <Link
-            to="/"
-            className="shrink-0 flex items-center gap-2"
-            title="Back to Hub"
-          >
-            <span className="w-2 h-2 rounded-full bg-arena-blue shadow-[0_0_8px_#60A5FA]" />
-            <span className="font-display font-semibold tracking-tight text-lg">
-              LNP Hub<span className="text-arena-blue">.</span>
-              <span className="ml-2 text-[10px] tracking-[0.3em] uppercase text-arena-muted font-normal align-middle">
-                Admin
-              </span>
-            </span>
-          </Link>
-          <span className="ml-auto text-xs text-arena-muted">{user?.email}</span>
-        </div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-wrap gap-1 -mb-px">
-          {EVENTS.map((ev) => (
-            <button
-              key={ev.id}
-              onClick={() => setSection(ev.id)}
-              className={`px-4 py-2 text-sm border-b-2 transition flex items-center gap-2 ${
-                section === ev.id
+    <>
+      <div className="mb-4 flex gap-1 border-b border-arena-border">
+        {WC_TABS.map((t) => (
+          <NavLink
+            key={t.id}
+            to={t.id}
+            className={({ isActive }) =>
+              `px-3 py-2 text-xs tracking-[0.2em] uppercase border-b-2 -mb-px transition ${
+                isActive
                   ? "border-arena-blue text-arena-blue"
                   : "border-transparent text-arena-muted hover:text-arena-text"
-              }`}
-            >
-              <span>{ev.icon}</span>
-              {ev.label}
-            </button>
-          ))}
-        </div>
-      </header>
+              }`
+            }
+          >
+            {t.label}
+          </NavLink>
+        ))}
+      </div>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
-        {loading ? (
-          <p className="py-12 text-sm text-arena-muted text-center">Đang tải…</p>
-        ) : section === "wellness-challenge" ? (
-          <>
-            <div className="mb-4 flex gap-1 border-b border-arena-border">
-              {WC_TABS.map((t) => (
-                <button
-                  key={t.id}
-                  onClick={() => setWcTab(t.id)}
-                  className={`px-3 py-2 text-xs tracking-[0.2em] uppercase border-b-2 -mb-px transition ${
-                    wcTab === t.id
-                      ? "border-arena-blue text-arena-blue"
-                      : "border-transparent text-arena-muted hover:text-arena-text"
-                  }`}
-                >
-                  {t.label}
-                </button>
-              ))}
-            </div>
-            {wcTab === "entries" ? (
-              <EntriesTab
-                entries={entries}
-                profiles={profiles}
-                onEdit={setEditing}
-                onAdd={() => setEditing({})}
-                onDelete={async (id) => {
-                  if (!confirm("Xoá buổi tập này?")) return;
-                  try {
-                    await deleteEntry(id);
-                    await reload();
-                    showToast("Đã xoá");
-                  } catch (e) {
-                    showToast(e.message, "error");
-                  }
-                }}
-              />
-            ) : (
-              <UsersTab profiles={profiles} onChange={handleProfileChange} />
-            )}
-          </>
-        ) : (
-          <WorldCupAdmin />
-        )}
-      </main>
+      {loading ? (
+        <p className="py-12 text-sm text-arena-muted text-center">Đang tải…</p>
+      ) : (
+        <Outlet
+          context={{
+            entries,
+            profiles,
+            onEdit: setEditing,
+            onAdd: () => setEditing({}),
+            onDelete: async (id) => {
+              if (!confirm("Xoá buổi tập này?")) return;
+              try {
+                await deleteEntry(id);
+                await reload();
+                showToast("Đã xoá");
+              } catch (e) {
+                showToast(e.message, "error");
+              }
+            },
+            onProfileChange: handleProfileChange,
+          }}
+        />
+      )}
 
       {editing !== null && (
         <EntryModal
@@ -179,31 +133,12 @@ export default function Admin() {
           {toast.text}
         </div>
       )}
-    </div>
+    </>
   );
 }
 
-// ============================================================
-// World Cup admin (stub)
-// ============================================================
-function WorldCupAdmin() {
-  return (
-    <div className="rounded-lg border border-arena-border bg-arena-surface p-10 text-center">
-      <div className="text-4xl mb-3">⚽</div>
-      <h2 className="font-display text-2xl font-semibold mb-2">
-        World Cup Admin
-      </h2>
-      <p className="text-sm text-arena-muted">
-        Khu vực quản lý dự đoán, kết quả trận và đội hình sẽ sớm ra mắt.
-      </p>
-    </div>
-  );
-}
-
-// ============================================================
-// Entries tab
-// ============================================================
-function EntriesTab({ entries, profiles, onEdit, onAdd, onDelete }) {
+export function EntriesTab() {
+  const { entries, profiles, onEdit, onAdd, onDelete } = useOutletContext();
   const [search, setSearch] = useState("");
   const [filterUser, setFilterUser] = useState("all");
   const profileById = useMemo(
@@ -368,10 +303,8 @@ function EntriesTab({ entries, profiles, onEdit, onAdd, onDelete }) {
   );
 }
 
-// ============================================================
-// Users tab
-// ============================================================
-function UsersTab({ profiles, onChange }) {
+export function UsersTab() {
+  const { profiles, onProfileChange: onChange } = useOutletContext();
   return (
     <div className="space-y-4">
       <h2 className="font-display text-2xl font-semibold">
@@ -449,9 +382,6 @@ function UsersTab({ profiles, onChange }) {
   );
 }
 
-// ============================================================
-// Entry modal (add / edit)
-// ============================================================
 function EntryModal({ entry, profiles, onClose, onSave }) {
   const isEdit = !!entry.id;
   const initialMode = entry.user_email && !entry.user_id ? "email" : "user";
@@ -772,9 +702,6 @@ function EntryModal({ entry, profiles, onClose, onSave }) {
   );
 }
 
-// ============================================================
-// Small bits
-// ============================================================
 function Field({ label, children, error }) {
   return (
     <label className="block">

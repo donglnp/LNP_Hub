@@ -17,9 +17,11 @@ export default function GameCard({ game, playLabel = "Play", comingSoonLabel = "
   const accentClass =
     accent === "amber"
       ? "from-arena-amber/20 to-transparent border-arena-amber/30 hover:border-arena-amber/60"
-      : accent === "red"
-        ? "from-arena-red/20 to-transparent border-arena-red/30 hover:border-arena-red/60"
-        : "from-arena-green/20 to-transparent border-arena-green/30 hover:border-arena-green/60";
+      : accent === "christmas"
+        ? "from-arena-red/20 via-arena-surface to-arena-green/20 border-arena-red/30 hover:border-arena-green/60"
+        : accent === "red"
+          ? "from-arena-red/20 to-transparent border-arena-red/30 hover:border-arena-red/60"
+          : "from-arena-green/20 to-transparent border-arena-green/30 hover:border-arena-green/60";
 
   let tag = playLabel;
   let tagClass = "text-arena-muted";
@@ -41,7 +43,7 @@ export default function GameCard({ game, playLabel = "Play", comingSoonLabel = "
 
   const body = (
     <div
-      className={`group relative overflow-hidden rounded-lg border bg-gradient-to-br ${accentClass} bg-arena-surface p-6 transition ${
+      className={`group relative flex h-full flex-col overflow-hidden rounded-lg border bg-gradient-to-br ${accentClass} bg-arena-surface p-6 transition ${
         disabled ? "opacity-50 pointer-events-none" : ""
       }`}
     >
@@ -62,8 +64,16 @@ export default function GameCard({ game, playLabel = "Play", comingSoonLabel = "
 
   if (suggest) {
     const subject = encodeURIComponent(suggestSubject || "New activity suggestion");
-    return <a href={`mailto:hub@lnp-technologies.com?subject=${subject}`}>{body}</a>;
+    return (
+      <a className="h-full" href={`mailto:hub@lnp-technologies.com?subject=${subject}`}>
+        {body}
+      </a>
+    );
   }
   if (disabled) return body;
-  return <Link to={path}>{body}</Link>;
+  return (
+    <Link className="h-full" to={path}>
+      {body}
+    </Link>
+  );
 }

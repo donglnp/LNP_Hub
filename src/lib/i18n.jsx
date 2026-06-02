@@ -88,13 +88,13 @@ const dict = {
   },
   "catalog.lw_name": {
     en: "Lucky Wheel",
-    vi: "Vòng quay nhân phẩm",
-    ja: "ラッキーホイール",
+    vi: "Lucky Wheel",
+    ja: "Lucky Wheel",
   },
   "catalog.lw_desc": {
-    en: "Spin the wheel and test your luck — coffee, snacks, or the jackpot await.",
-    vi: "Quay vòng quay thử vận may — cà phê, đồ ăn vặt hay jackpot đang chờ bạn.",
-    ja: "ホイールを回して運試し — コーヒー、お菓子、ジャックポットが待っている。",
+    en: "Spin the wheel and test your luck.",
+    vi: "Quay vòng quay thử vận may.",
+    ja: "ホイールを回して運試し。",
   },
 
   // ---------- Lucky Wheel ----------
@@ -1174,6 +1174,138 @@ const dict = {
     en: "Start logging a session",
     vi: "Bắt đầu ghi buổi tập",
     ja: "セッション記録を始める",
+  },
+
+  // ---------- Secret Santa ----------
+  "santa.brand_tag": { en: "Santa", vi: "Secret Santa", ja: "サンタ" },
+  "santa.tag": { en: "◆ Secret Santa", vi: "◆ Trao quà bí mật", ja: "◆ シークレットサンタ" },
+  "santa.title": { en: "Secret Santa Exchange", vi: "Trao Quà Bí Mật", ja: "シークレットサンタ交換" },
+  "santa.tagline": {
+    en: "Spread holiday cheer! Sign up, write your wishlist, and swap gifts secretly with a random colleague.",
+    vi: "Lan tỏa niềm vui ấm áp! Đăng ký, viết điều ước và trao quà bí mật cho một đồng nghiệp ngẫu nhiên.",
+    ja: "ホリデーの喜びを分かち合おう！ウィッシュリストを書いて、ランダムに同僚とギフトを交換しよう。"
+  },
+  "santa.reg_title": { en: "Join the Exchange", vi: "Tham gia trao quà", ja: "イベントに参加する" },
+  "santa.reg_subtitle": { en: "Fill out your wishlist so your secret Santa knows what you want.", vi: "Viết lời nhắn gửi/món quà bạn thích để Secret Santa biết ý bạn nhé.", ja: "サンタが何を用意すればいいか分かるように、ウィッシュリストを記入してください。" },
+  "santa.wishlist_label": { en: "Your Wishlist", vi: "Món quà mong muốn của bạn", ja: "ウィッシュリスト" },
+  "santa.wishlist_placeholder": {
+    en: "e.g., Mechanical keyboard, Coffee mug, Lego, Tech books...",
+    vi: "Ví dụ: Bàn phím cơ, Cốc cà phê, Bộ Lego, Sách công nghệ, Cà phê hạt...",
+    ja: "例：メカニカルキーボード、マグカップ、レゴ、技術書..."
+  },
+  "santa.btn_join": { en: "Join Event", vi: "Đăng ký tham gia", ja: "参加登録する" },
+  "santa.btn_saving": { en: "Saving...", vi: "Đang lưu...", ja: "保存中..." },
+  "santa.btn_update_wishlist": { en: "Update Wishlist", vi: "Cập nhật mong ước", ja: "ウィッシュリストを更新" },
+  "santa.reg_success": { en: "You're in! 🎅", vi: "Đăng ký thành công! 🎅", ja: "Đăng ký thành công! 🎅" },
+  "santa.reg_waiting": {
+    en: "Registration complete. Waiting for matching to start!",
+    vi: "Đã ghi nhận đăng ký. Đang chờ admin đóng đăng ký và bắt cặp ngẫu nhiên!",
+    ja: "登録完了。マッチング開始をお待ちください！"
+  },
+  "santa.participants_joined": {
+    en: "Participants Joined ({n})",
+    vi: "Danh sách tham gia ({n})",
+    ja: "参加者一覧 ({n})"
+  },
+  "santa.unwrap_cta": { en: "Tap to Unwrap Your Target 🎁", vi: "Bấm để mở gói quà bí mật 🎁", ja: "タップして相手を確認する 🎁" },
+  "santa.giver_card_title": { en: "Your Gift Target", vi: "Đối tượng tặng quà của bạn", ja: "あなたのプレゼント相手" },
+  "santa.giver_card_desc": {
+    en: "You are the Secret Santa for this colleague. Keep it a secret!",
+    vi: "Bạn chính là Secret Santa của đồng nghiệp này. Hãy giữ bí mật nhé!",
+    ja: "あなたはこの同僚のシークレットサンタです。秘密にしてください！"
+  },
+  "santa.target_wishlist": { en: "Their Wishlist", vi: "Mong ước của họ", ja: "相手のウィッシュリスト" },
+  "santa.budget_info": { en: "Event Budget", vi: "Ngân sách sự kiện", ja: "イベント予算" },
+  "santa.delivery_instructions": {
+    en: "Instructions: Buy a gift within the budget. Put it under the office tree before the deadline!",
+    vi: "Hướng dẫn: Chuẩn bị món quà phù hợp ngân sách và đặt dưới cây thông Noel công ty trước hạn nhé!",
+    ja: "案内：予算内のプレゼントを用意し、締切日までにオフィスのツリーの下に置いてください！"
+  },
+  "santa.status_sent_label": { en: "I have prepared & delivered the gift", vi: "Tôi đã chuẩn bị và gửi quà", ja: "プレゼントを発送しました" },
+  "santa.status_received_label": { en: "I have received my gift", vi: "Tôi đã nhận được quà của mình", ja: "プレゼントを受け取りました" },
+  "santa.my_santa_status": { en: "Your Santa Status", vi: "Tình trạng quà gửi cho bạn", ja: "サンタからの状況" },
+  "santa.my_santa_sent": { en: "Your Secret Santa has delivered your gift under the tree! 🎁", vi: "Secret Santa của bạn đã đặt quà dưới cây thông rồi! 🎁", ja: "サンタがツリーの下にプレゼントを置きました！🎁" },
+  "santa.my_santa_preparing": { en: "Your Secret Santa is preparing your gift... 🎄", vi: "Secret Santa của bạn đang chuẩn bị quà... 🎄", ja: "サンタがプレゼントを準備中です... 🎄" },
+  "santa.completed_title": { en: "Exchange Completed!", vi: "Sự kiện kết thúc!", ja: "交換完了！" },
+  "santa.completed_desc": {
+    en: "Thank you for participating in Secret Santa! Hope you had a wonderful holiday.",
+    vi: "Cảm ơn bạn đã tham gia Secret Santa! Chúc bạn có những ngày lễ thật ấm áp và vui vẻ.",
+    ja: "シークレットサンタへのご参加ありがとうございました！素晴らしいホリデーになりますように。"
+  },
+  "santa.admin_panel": { en: "Santa Admin Console", vi: "Bảng Quản Trị Secret Santa", ja: "サンタ管理画面" },
+  "santa.admin_event_title": { en: "Event Title", vi: "Tên sự kiện", ja: "イベント名" },
+  "santa.admin_budget": { en: "Budget Limit", vi: "Giới hạn ngân sách", ja: "予算制限" },
+  "santa.admin_status": { en: "Event Phase", vi: "Giai đoạn sự kiện", ja: "イベントフェーズ" },
+  "santa.admin_status_reg": { en: "Registration Open", vi: "Mở đăng ký", ja: "登録受付中" },
+  "santa.admin_status_matched": { en: "Matched (Gifting Live)", vi: "Đã bắt cặp (Đang tặng quà)", ja: "マッチング完了" },
+  "santa.admin_status_completed": { en: "Completed", vi: "Đã kết thúc", ja: "終了済み" },
+  "santa.btn_draw": { en: "Draw Secret Santa Matches 🎲", vi: "Bắt cặp ngẫu nhiên 🎲", ja: "マッチング抽選 🎲" },
+  "santa.btn_reset_draw": { en: "Reset Matches", vi: "Xóa kết quả bắt cặp", ja: "マッチングをリセット" },
+  "santa.admin_draw_confirm": {
+    en: "Are you sure you want to draw matches? This will pair up all registered participants.",
+    vi: "Bạn có chắc chắn muốn bắt cặp? Hệ thống sẽ tạo cặp ngẫu nhiên cho tất cả thành viên đăng ký.",
+    ja: "マッチング抽選を実行しますか？登録されたすべての参加者がペアリングされます。"
+  },
+  "santa.admin_reset_confirm": {
+    en: "Are you sure you want to reset matches? All current pairings will be deleted.",
+    vi: "Bạn có chắc chắn muốn xóa kết quả bắt cặp? Toàn bộ dữ liệu ghép cặp hiện tại sẽ bị xóa sạch.",
+    ja: "マッチングをリセットしますか？現在のすべてのペアリングデータが削除されます。"
+  },
+  "santa.admin_participants_list": { en: "Participant Management", vi: "Quản lý người tham gia", ja: "参加者管理" },
+  "santa.admin_no_event": { en: "No active Secret Santa event. Create one below to start!", vi: "Chưa có sự kiện Secret Santa nào. Hãy tạo sự kiện mới bên dưới để bắt đầu!", ja: "アクティブなイベントはありません。以下から新規作成してください！" },
+  "santa.user_no_event_title": {
+    en: "The North Pole is still quiet... 🎅",
+    vi: "Bắc Cực vẫn còn yên tĩnh... 🎅",
+    ja: "北極はまだ静かです... 🎅",
+  },
+  "santa.user_no_event_desc": {
+    en: "Santa hasn't opened registration yet. Hang your stockings — the magic begins soon. Please check back a little later! ✨🎄",
+    vi: "Ông già Noel chưa mở đăng ký đâu. Hãy treo tất lên và kiên nhẫn chờ một chút — phép màu sắp bắt đầu rồi! ✨🎄",
+    ja: "サンタはまだ受付を始めていません。靴下を吊るしてもう少しお待ちください — まもなく魔法が始まります！✨🎄",
+  },
+  "santa.admin_create_event": { en: "Create New Event", vi: "Tạo sự kiện mới", ja: "新規イベント作成" },
+  "santa.err_min_participants": { en: "Need at least 2 participants to run matching!", vi: "Cần ít nhất 2 người đăng ký tham gia để thực hiện bắt cặp!", ja: "マッチングを実行するには少なくとも2人の参加者が必要です！" },
+  "santa.admin_save_settings": { en: "Save Changes", vi: "Lưu thay đổi", ja: "変更を保存" },
+  "santa.admin_close_event": { en: "Close Event", vi: "Đóng sự kiện", ja: "イベントを終了" },
+  "santa.admin_close_confirm": {
+    en: "Are you sure you want to close (delete) this event? All registrations and matches will be removed permanently.",
+    vi: "Bạn có chắc muốn đóng (xóa) sự kiện này? Toàn bộ đăng ký và kết quả bắt cặp sẽ bị xóa vĩnh viễn.",
+    ja: "本当にこのイベントを閉じますか？すべての登録とマッチングが完全に削除されます。",
+  },
+  "santa.rules_title": { en: "How It Works", vi: "Luật chơi", ja: "ルール" },
+  "santa.rule_1": {
+    en: "Register your wishlist during the open registration phase.",
+    vi: "Đăng ký danh sách quà mong muốn trong giai đoạn mở đăng ký.",
+    ja: "登録期間中にウィッシュリストを送信してください。",
+  },
+  "santa.rule_2": {
+    en: "When matching opens, you'll be paired randomly with one teammate to gift to. Your identity stays secret!",
+    vi: "Khi bắt cặp, bạn sẽ được ghép ngẫu nhiên với một người trong team để tặng quà. Danh tính được giữ bí mật!",
+    ja: "マッチング開始後、ランダムに1人とペアリングされ、その人にプレゼントを贈ります。あなたの正体は秘密です！",
+  },
+  "santa.rule_3": {
+    en: "Prepare a gift within the event budget, then deliver it secretly (anonymous wrap, no name tag).",
+    vi: "Chuẩn bị quà trong ngân sách quy định, rồi gửi quà bí mật (gói ẩn danh, không ghi tên người tặng).",
+    ja: "予算内でプレゼントを用意し、匿名で贈ってください（名前を書かない包装で）。",
+  },
+  "santa.rule_4": {
+    en: "Mark gift as 'Sent' once delivered, and 'Received' when your gift arrives.",
+    vi: "Đánh dấu 'Đã gửi' khi đã trao quà, và 'Đã nhận' khi nhận được quà từ Santa của bạn.",
+    ja: "プレゼントを贈ったら『送信済み』、受け取ったら『受領済み』にチェックを入れてください。",
+  },
+  "santa.rule_5": {
+    en: "Have fun and keep the secret until the big reveal! 🎁",
+    vi: "Vui vẻ và giữ bí mật cho đến phút khám phá cuối cùng! 🎁",
+    ja: "楽しみながら、最後の発表まで秘密を守りましょう！🎁",
+  },
+  "catalog.section_events": { en: "Events", vi: "Sự kiện", ja: "イベント" },
+  "catalog.section_minigames": { en: "Mini Games", vi: "Mini Game", ja: "ミニゲーム" },
+  "catalog.section_suggest": { en: "Suggest", vi: "Đề xuất hoạt động", ja: "提案" },
+  "catalog.santa_name": { en: "Secret Santa", vi: "Secret Santa", ja: "Secret Santa" },
+  "catalog.santa_desc": {
+    en: "Register your wishlist and swap gifts secretly.",
+    vi: "Đăng ký điều ước và trao quà bí mật.",
+    ja: "ウィッシュリストを書いて、秘密のプレゼント交換。"
   },
 };
 

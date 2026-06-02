@@ -33,18 +33,8 @@ export default function Catalog() {
     wellnessCard.statusLabel = t("catalog.tag_running");
   }
 
-  const games = [
+  const events = [
     wellnessCard,
-    {
-      slug: "lucky-wheel",
-      name: t("catalog.lw_name"),
-      description: t("catalog.lw_desc"),
-      path: "/lucky-wheel",
-      icon: "🧧",
-      accent: "red",
-      status: "running",
-      statusLabel: t("catalog.tag_running"),
-    },
     {
       slug: "wc",
       name: t("catalog.wc_name"),
@@ -55,6 +45,30 @@ export default function Catalog() {
       status: "upcoming",
       statusLabel: t("catalog.tag_upcoming"),
     },
+  ];
+
+  const miniGames = [
+    {
+      slug: "lucky-wheel",
+      name: t("catalog.lw_name"),
+      description: t("catalog.lw_desc"),
+      path: "/lucky-wheel",
+      icon: "🧧",
+      accent: "red",
+    },
+    {
+      slug: "secret-santa",
+      name: t("catalog.santa_name"),
+      description: t("catalog.santa_desc"),
+      path: "/secret-santa",
+      icon: "🎄",
+      accent: "christmas",
+      status: "upcoming",
+      statusLabel: t("catalog.tag_upcoming"),
+    },
+  ];
+
+  const suggestions = [
     {
       slug: "suggest",
       name: t("catalog.suggest_name"),
@@ -141,11 +155,29 @@ export default function Catalog() {
           </p>
         </section>
 
-        <section className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-          {games.map((g) => (
-            <GameCard key={g.slug} game={g} playLabel={t("catalog.tag_play")} comingSoonLabel={t("catalog.tag_coming_soon")} />
+        <div className="space-y-10">
+          {[
+            { title: t("catalog.section_events"), items: events },
+            { title: t("catalog.section_minigames"), items: miniGames },
+            { title: t("catalog.section_suggest"), items: suggestions },
+          ].map((row) => (
+            <section key={row.title}>
+              <h2 className="mb-4 text-[10px] tracking-[0.4em] uppercase text-arena-muted font-semibold">
+                {row.title}
+              </h2>
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                {row.items.map((g) => (
+                  <GameCard
+                    key={g.slug}
+                    game={g}
+                    playLabel={t("catalog.tag_play")}
+                    comingSoonLabel={t("catalog.tag_coming_soon")}
+                  />
+                ))}
+              </div>
+            </section>
           ))}
-        </section>
+        </div>
       </main>
     </div>
   );

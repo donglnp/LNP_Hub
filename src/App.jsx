@@ -11,7 +11,19 @@ import { ThemeProvider } from "./lib/ThemeContext";
 const WorldCupGame = lazy(() => import("./games/wc"));
 const WellnessChallenge = lazy(() => import("./games/wellness-challenge"));
 const LuckyWheel = lazy(() => import("./games/lucky-wheel"));
-const Admin = lazy(() => import("./pages/Admin"));
+const SecretSanta = lazy(() => import("./games/secret-santa"));
+const AdminLayout = lazy(() => import("./pages/admin/AdminLayout"));
+const WellnessAdmin = lazy(() => import("./pages/admin/WellnessAdmin"));
+const WellnessEntriesTab = lazy(() =>
+  import("./pages/admin/WellnessAdmin").then((m) => ({ default: m.EntriesTab }))
+);
+const WellnessUsersTab = lazy(() =>
+  import("./pages/admin/WellnessAdmin").then((m) => ({ default: m.UsersTab }))
+);
+const WorldCupAdmin = lazy(() => import("./pages/admin/WorldCupAdmin"));
+const SantaAdminPanel = lazy(() =>
+  import("./games/secret-santa/pages/AdminPanel")
+);
 
 function GameFallback() {
   return (
@@ -61,15 +73,67 @@ export default function App() {
                   </Suspense>
                 }
               />
+              <Route
+                path="/secret-santa/*"
+                element={
+                  <Suspense fallback={<GameFallback />}>
+                    <SecretSanta />
+                  </Suspense>
+                }
+              />
               <Route element={<AdminRoute />}>
                 <Route
                   path="/admin"
                   element={
                     <Suspense fallback={<GameFallback />}>
-                      <Admin />
+                      <AdminLayout />
                     </Suspense>
                   }
-                />
+                >
+                  <Route index element={<Navigate to="wellness-challenge" replace />} />
+                  <Route
+                    path="wellness-challenge"
+                    element={
+                      <Suspense fallback={<GameFallback />}>
+                        <WellnessAdmin />
+                      </Suspense>
+                    }
+                  >
+                    <Route index element={<Navigate to="entries" replace />} />
+                    <Route
+                      path="entries"
+                      element={
+                        <Suspense fallback={<GameFallback />}>
+                          <WellnessEntriesTab />
+                        </Suspense>
+                      }
+                    />
+                    <Route
+                      path="users"
+                      element={
+                        <Suspense fallback={<GameFallback />}>
+                          <WellnessUsersTab />
+                        </Suspense>
+                      }
+                    />
+                  </Route>
+                  <Route
+                    path="wc"
+                    element={
+                      <Suspense fallback={<GameFallback />}>
+                        <WorldCupAdmin />
+                      </Suspense>
+                    }
+                  />
+                  <Route
+                    path="secret-santa"
+                    element={
+                      <Suspense fallback={<GameFallback />}>
+                        <SantaAdminPanel />
+                      </Suspense>
+                    }
+                  />
+                </Route>
               </Route>
               <Route path="*" element={<Navigate to="/" replace />} />
             </Route>

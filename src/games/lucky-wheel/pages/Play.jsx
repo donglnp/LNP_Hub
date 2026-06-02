@@ -147,6 +147,8 @@ export default function Play() {
             rotation={rotation}
             spinning={spinning}
             durationMs={DURATION}
+            onSpin={spin}
+            canSpin={canSpin}
           />
           <button
             onClick={spin}

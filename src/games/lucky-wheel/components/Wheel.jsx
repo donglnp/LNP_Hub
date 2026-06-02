@@ -20,7 +20,7 @@ function truncate(s, n) {
   return s.length > n ? s.slice(0, n - 1) + "…" : s;
 }
 
-export default function Wheel({ options, colors, rotation, spinning, durationMs = 4500 }) {
+export default function Wheel({ options, colors, rotation, spinning, durationMs = 4500, onSpin, canSpin = true }) {
   const n = options.length;
   const slice = 360 / n;
 
@@ -107,22 +107,36 @@ export default function Wheel({ options, colors, rotation, spinning, durationMs 
               </g>
             </g>
           ))}
-          <circle
-            cx={CENTER}
-            cy={CENTER}
-            r="20"
-            fill="rgb(var(--arena-card))"
-            stroke="rgb(var(--arena-border))"
-            strokeWidth="2"
-          />
-          <circle
-            cx={CENTER}
-            cy={CENTER}
-            r="6"
-            fill="rgb(var(--arena-red) / 0.7)"
-          />
         </svg>
       </div>
+
+      {onSpin && (
+        <button
+          type="button"
+          onClick={onSpin}
+          disabled={!canSpin}
+          aria-label="Spin"
+          className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20 rounded-full grid place-items-center transition ${
+            canSpin ? "cursor-pointer hover:scale-110 active:scale-95" : "cursor-not-allowed opacity-60"
+          }`}
+          style={{
+            width: 44,
+            height: 44,
+            background: "rgb(var(--arena-card))",
+            border: "2px solid rgb(var(--arena-border))",
+            boxShadow: "0 2px 8px rgb(0 0 0 / 0.3)",
+          }}
+        >
+          <span
+            className="rounded-full"
+            style={{
+              width: 14,
+              height: 14,
+              background: "rgb(var(--arena-red) / 0.85)",
+            }}
+          />
+        </button>
+      )}
     </div>
   );
 }
