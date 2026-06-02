@@ -29,6 +29,12 @@ export default function GameCard({ game, playLabel = "Play", comingSoonLabel = "
   } else if (status === "upcoming") {
     tag = statusLabel || "Upcoming";
     tagClass = "text-arena-amber";
+  } else if (status === "running") {
+    tag = statusLabel || "Live";
+    tagClass = "text-arena-green";
+  } else if (status === "ended") {
+    tag = statusLabel || "Ended";
+    tagClass = "text-arena-muted";
   }
 
   const body = (

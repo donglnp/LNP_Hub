@@ -4,22 +4,36 @@ import LanguageSwitcher from "../components/LanguageSwitcher";
 import { useAuth } from "../lib/AuthContext";
 import { signOut } from "../lib/auth";
 import { useT } from "../lib/i18n";
+import { PROGRAM, programState, formatDate } from "../games/wellness-challenge/lib/data";
 
 export default function Catalog() {
   const { user, isAdmin } = useAuth();
   const { t } = useT();
 
+  const wcState = programState();
+  const wellnessCard = {
+    slug: "wellness-challenge",
+    name: t("catalog.wellness_name"),
+    description: t("catalog.wellness_desc"),
+    path: "/wellness-challenge",
+    icon: "💪",
+    accent: "amber",
+  };
+  if (wcState === "upcoming") {
+    wellnessCard.status = "upcoming";
+    wellnessCard.statusLabel = t("catalog.tag_upcoming_date", {
+      date: formatDate(PROGRAM.startDate),
+    });
+  } else if (wcState === "ended") {
+    wellnessCard.status = "ended";
+    wellnessCard.statusLabel = t("catalog.tag_ended");
+  } else {
+    wellnessCard.status = "running";
+    wellnessCard.statusLabel = t("catalog.tag_running");
+  }
+
   const games = [
-    {
-      slug: "wellness-challenge",
-      name: t("catalog.wellness_name"),
-      description: t("catalog.wellness_desc"),
-      path: "/wellness-challenge",
-      icon: "💪",
-      accent: "amber",
-      status: "upcoming",
-      statusLabel: t("catalog.tag_upcoming_date", { date: "01/06/2026" }),
-    },
+    wellnessCard,
     {
       slug: "wc",
       name: t("catalog.wc_name"),

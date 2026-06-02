@@ -48,6 +48,8 @@ const dict = {
     vi: "Sắp diễn ra · {date}",
     ja: "開催予定 · {date}",
   },
+  "catalog.tag_running": { en: "Live", vi: "Đang diễn ra", ja: "開催中" },
+  "catalog.tag_ended": { en: "Ended", vi: "Đã kết thúc", ja: "終了" },
   "catalog.tag_suggest": { en: "Suggest", vi: "Góp ý", ja: "提案" },
   "catalog.wc_name": {
     en: "World Cup 2026",
