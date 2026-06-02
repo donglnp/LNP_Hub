@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import GameCard from "../components/GameCard";
 import LanguageSwitcher from "../components/LanguageSwitcher";
+import ThemeToggle from "../components/ThemeToggle";
 import { useAuth } from "../lib/AuthContext";
 import { signOut } from "../lib/auth";
 import { useT } from "../lib/i18n";
@@ -34,6 +35,16 @@ export default function Catalog() {
 
   const games = [
     wellnessCard,
+    {
+      slug: "lucky-wheel",
+      name: t("catalog.lw_name"),
+      description: t("catalog.lw_desc"),
+      path: "/lucky-wheel",
+      icon: "🧧",
+      accent: "red",
+      status: "running",
+      statusLabel: t("catalog.tag_running"),
+    },
     {
       slug: "wc",
       name: t("catalog.wc_name"),
@@ -87,6 +98,7 @@ export default function Catalog() {
                 Admin
               </Link>
             )}
+            <ThemeToggle variant="nav" />
             <LanguageSwitcher variant="nav" />
             <button
               onClick={logout}

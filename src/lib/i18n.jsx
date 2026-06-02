@@ -86,6 +86,62 @@ const dict = {
     vi: "Đề xuất hoạt động mới",
     ja: "新しいアクティビティの提案",
   },
+  "catalog.lw_name": {
+    en: "Lucky Wheel",
+    vi: "Vòng quay nhân phẩm",
+    ja: "ラッキーホイール",
+  },
+  "catalog.lw_desc": {
+    en: "Spin the wheel and test your luck — coffee, snacks, or the jackpot await.",
+    vi: "Quay vòng quay thử vận may — cà phê, đồ ăn vặt hay jackpot đang chờ bạn.",
+    ja: "ホイールを回して運試し — コーヒー、お菓子、ジャックポットが待っている。",
+  },
+
+  // ---------- Lucky Wheel ----------
+  "lw.brand_tag": { en: "Lucky", vi: "May mắn", ja: "ラッキー" },
+  "lw.tag": { en: "◆ Lucky Wheel", vi: "◆ Vòng quay", ja: "◆ ラッキーホイール" },
+  "lw.title": {
+    en: "Spin to Win",
+    vi: "Quay là trúng",
+    ja: "回して当てよう",
+  },
+  "lw.tagline": {
+    en: "Add your own options, spin the wheel, get a random pick.",
+    vi: "Tự thêm lựa chọn, quay và để vòng quay chọn giúp bạn.",
+    ja: "選択肢を追加してホイールを回し、ランダムに選ぼう。",
+  },
+  "lw.spin": { en: "Spin", vi: "Quay", ja: "スピン" },
+  "lw.spinning": { en: "Spinning…", vi: "Đang quay…", ja: "回転中…" },
+  "lw.result": { en: "Result", vi: "Kết quả", ja: "結果" },
+  "lw.history": { en: "Recent spins", vi: "Lượt quay gần đây", ja: "最近のスピン" },
+  "lw.history_empty": {
+    en: "No spins yet. Give the wheel a whirl!",
+    vi: "Chưa có lượt nào. Hãy thử quay nhé!",
+    ja: "まだスピンがありません。回してみよう!",
+  },
+  "lw.clear": { en: "Clear", vi: "Xoá", ja: "クリア" },
+  "lw.options_title": { en: "Options", vi: "Danh sách", ja: "選択肢" },
+  "lw.options_hint": {
+    en: "One per line — or separate with commas.",
+    vi: "Mỗi dòng một mục — hoặc cách nhau bằng dấu phẩy.",
+    ja: "1行に1つ、またはカンマで区切ってください。",
+  },
+  "lw.options_placeholder": {
+    en: "Option A\nOption B\nOption C",
+    vi: "Lựa chọn A\nLựa chọn B\nLựa chọn C",
+    ja: "選択肢 A\n選択肢 B\n選択肢 C",
+  },
+  "lw.options_count": {
+    en: "{n} options",
+    vi: "{n} mục",
+    ja: "{n} 項目",
+  },
+  "lw.apply": { en: "Apply", vi: "Áp dụng", ja: "適用" },
+  "lw.load_users": {
+    en: "Load users",
+    vi: "Lấy danh sách user",
+    ja: "ユーザー読込",
+  },
 
   // ---------- Nav ----------
   "nav.dashboard": { en: "Dashboard", vi: "Tổng quan", ja: "ダッシュボード" },
@@ -617,6 +673,7 @@ const dict = {
     vi: "Google Fit",
     ja: "Google Fit",
   },
+  "wc.dev_other": { en: "Other", vi: "Khác", ja: "その他" },
 
   // ---------- Wellness: prizes ----------
   "wc.prize_monthly_kpi": {

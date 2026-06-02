@@ -17,7 +17,9 @@ export default function GameCard({ game, playLabel = "Play", comingSoonLabel = "
   const accentClass =
     accent === "amber"
       ? "from-arena-amber/20 to-transparent border-arena-amber/30 hover:border-arena-amber/60"
-      : "from-arena-green/20 to-transparent border-arena-green/30 hover:border-arena-green/60";
+      : accent === "red"
+        ? "from-arena-red/20 to-transparent border-arena-red/30 hover:border-arena-red/60"
+        : "from-arena-green/20 to-transparent border-arena-green/30 hover:border-arena-green/60";
 
   let tag = playLabel;
   let tagClass = "text-arena-muted";

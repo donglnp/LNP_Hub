@@ -173,7 +173,7 @@ export default function Log() {
             >
               {DEVICES.map((d) => (
                 <option key={d.id} value={d.id}>
-                  {d.label}
+                  {t(`wc.dev_${d.id}`)}
                 </option>
               ))}
             </select>

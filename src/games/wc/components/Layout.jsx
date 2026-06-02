@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { NavLink, Outlet } from "react-router-dom";
 import LanguageSwitcher from "../../../components/LanguageSwitcher";
+import ThemeToggle from "../../../components/ThemeToggle";
 import RulesModal from "./RulesModal";
 import { useT } from "../../../lib/i18n";
 
@@ -64,6 +65,7 @@ export default function Layout({ user }) {
               </span>
               <span className="hidden sm:inline">{t("rules.cta")}</span>
             </button>
+            <ThemeToggle variant="nav" />
             <LanguageSwitcher variant="nav" />
             <NavLink
               to="/wc/profile"

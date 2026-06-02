@@ -7,8 +7,8 @@ export default function Ring({
   unit = "kcal",
   size = 180,
   stroke = 12,
-  color = "#F5C451",
-  trackColor = "#1C242E",
+  color = "rgb(var(--arena-amber))",
+  trackColor = "rgb(var(--arena-border))",
 }) {
   const { lang } = useT();
   const r = (size - stroke) / 2;

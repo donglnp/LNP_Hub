@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { signInWithGoogle, isSupabaseReady } from "../lib/auth";
 import LanguageSwitcher from "../components/LanguageSwitcher";
+import ThemeToggle from "../components/ThemeToggle";
 import { useT } from "../lib/i18n";
 
 export default function Login() {
@@ -34,7 +35,10 @@ export default function Login() {
               LNP Hub<span className="text-arena-blue">.</span>
             </span>
           </div>
-          <LanguageSwitcher variant="login" />
+          <div className="flex items-center gap-2">
+            <ThemeToggle variant="login" />
+            <LanguageSwitcher variant="login" />
+          </div>
         </div>
 
         <div className="flex-1 flex flex-col justify-center max-w-sm">
@@ -105,13 +109,7 @@ export default function Login() {
       <div className="relative hidden lg:block overflow-hidden border-l border-arena-border bg-arena-bg">
         <div className="absolute inset-0 bg-gradient-to-br from-arena-blue/10 via-arena-bg to-arena-bg" />
         <div className="absolute inset-0 grid-bg opacity-40" />
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(circle at 70% 30%, rgba(96, 165, 250, 0.15), transparent 50%), radial-gradient(circle at 30% 70%, rgba(96, 165, 250, 0.08), transparent 50%)",
-          }}
-        />
+        <div className="absolute inset-0 hero-glow" />
         <div className="absolute bottom-8 right-8 text-right">
           <p className="text-[10px] tracking-[0.4em] uppercase text-arena-blue">
             {t("common.system_online")}
@@ -125,14 +123,14 @@ export default function Login() {
           <div className="absolute -inset-6 rounded-[28px] bg-arena-blue/20 blur-3xl opacity-70" aria-hidden="true" />
           <div className="absolute -inset-px rounded-[24px] bg-gradient-to-br from-arena-blue/60 via-arena-blue/10 to-transparent opacity-80" aria-hidden="true" />
 
-          <div className="relative rounded-[22px] overflow-hidden border border-white/10 bg-white/5 backdrop-blur-xl shadow-[0_30px_80px_-20px_rgba(0,0,0,0.6)]">
+          <div className="relative rounded-[22px] overflow-hidden border border-arena-border bg-arena-surface/40 backdrop-blur-xl shadow-[0_30px_80px_-20px_rgba(0,0,0,0.6)]">
             <img
               src="/team.jpg"
               alt="LNP team"
               className="block w-full h-auto object-cover"
               loading="lazy"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-arena-bg/85 via-arena-bg/10 to-transparent pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent pointer-events-none" />
             <div className="absolute inset-0 bg-gradient-to-br from-arena-blue/10 via-transparent to-transparent mix-blend-overlay pointer-events-none" />
 
             <div className="absolute top-3 left-3 flex items-center gap-1.5 rounded-full border border-white/15 bg-black/30 backdrop-blur px-2.5 py-1">

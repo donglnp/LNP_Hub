@@ -6,9 +6,11 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import AdminRoute from "./components/AdminRoute";
 import { AuthProvider, useAuth } from "./lib/AuthContext";
 import { I18nProvider } from "./lib/i18n";
+import { ThemeProvider } from "./lib/ThemeContext";
 
 const WorldCupGame = lazy(() => import("./games/wc"));
 const WellnessChallenge = lazy(() => import("./games/wellness-challenge"));
+const LuckyWheel = lazy(() => import("./games/lucky-wheel"));
 const Admin = lazy(() => import("./pages/Admin"));
 
 function GameFallback() {
@@ -27,8 +29,9 @@ function LoginRoute() {
 
 export default function App() {
   return (
-    <I18nProvider>
-      <BrowserRouter>
+    <ThemeProvider>
+      <I18nProvider>
+        <BrowserRouter>
         <AuthProvider>
           <Routes>
             <Route path="/login" element={<LoginRoute />} />
@@ -50,6 +53,14 @@ export default function App() {
                   </Suspense>
                 }
               />
+              <Route
+                path="/lucky-wheel/*"
+                element={
+                  <Suspense fallback={<GameFallback />}>
+                    <LuckyWheel />
+                  </Suspense>
+                }
+              />
               <Route element={<AdminRoute />}>
                 <Route
                   path="/admin"
@@ -64,7 +75,8 @@ export default function App() {
             </Route>
           </Routes>
         </AuthProvider>
-      </BrowserRouter>
-    </I18nProvider>
+        </BrowserRouter>
+      </I18nProvider>
+    </ThemeProvider>
   );
 }

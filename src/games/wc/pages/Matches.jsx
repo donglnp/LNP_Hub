@@ -75,7 +75,7 @@ export default function Matches({ user }) {
   if (loading || !data) return <MatchesSkeleton />;
 
   return (
-    <div className="rounded-lg border border-arena-green/40 bg-[radial-gradient(ellipse_at_top,_#0d1f15_0%,_#070A0E_60%)] p-4 sm:p-6">
+    <div className="panel-green rounded-lg border border-arena-green/40 p-4 sm:p-6">
       <div className="flex items-center justify-between flex-wrap gap-2">
         <h1 className="font-display text-2xl font-semibold">{t("matches.title")}</h1>
         <div className="flex items-center gap-3">

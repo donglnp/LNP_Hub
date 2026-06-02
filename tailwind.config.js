@@ -1,23 +1,24 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ["./index.html", "./src/**/*.{js,jsx}"],
+  darkMode: "class",
   theme: {
     extend: {
       colors: {
         arena: {
-          bg: "#070A0E",
-          surface: "#0D1117",
-          card: "#11161D",
-          border: "#1C242E",
-          line: "#222B36",
-          green: "#22E27A",
-          greenDim: "#0E5E33",
-          amber: "#F5C451",
-          blue: "#60A5FA",
-          blueDim: "#1E40AF",
-          red: "#FF5A5A",
-          muted: "#6B7787",
-          text: "#E6EBF2",
+          bg: "rgb(var(--arena-bg) / <alpha-value>)",
+          surface: "rgb(var(--arena-surface) / <alpha-value>)",
+          card: "rgb(var(--arena-card) / <alpha-value>)",
+          border: "rgb(var(--arena-border) / <alpha-value>)",
+          line: "rgb(var(--arena-line) / <alpha-value>)",
+          green: "rgb(var(--arena-green) / <alpha-value>)",
+          greenDim: "rgb(var(--arena-green-dim) / <alpha-value>)",
+          amber: "rgb(var(--arena-amber) / <alpha-value>)",
+          blue: "rgb(var(--arena-blue) / <alpha-value>)",
+          blueDim: "rgb(var(--arena-blue-dim) / <alpha-value>)",
+          red: "rgb(var(--arena-red) / <alpha-value>)",
+          muted: "rgb(var(--arena-muted) / <alpha-value>)",
+          text: "rgb(var(--arena-text) / <alpha-value>)",
         },
       },
       fontFamily: {
@@ -26,7 +27,7 @@ export default {
         mono: ["'JetBrains Mono'", "ui-monospace", "monospace"],
       },
       boxShadow: {
-        glow: "0 0 0 1px #22E27A, 0 0 24px -8px #22E27A",
+        glow: "0 0 0 1px rgb(var(--arena-green)), 0 0 24px -8px rgb(var(--arena-green))",
       },
     },
   },

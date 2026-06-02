@@ -3,6 +3,7 @@ import { NavLink, Outlet } from "react-router-dom";
 import { useAuth } from "../../../lib/AuthContext";
 import { useT } from "../../../lib/i18n";
 import LanguageSwitcher from "../../../components/LanguageSwitcher";
+import ThemeToggle from "../../../components/ThemeToggle";
 
 export default function WellnessLayout({ user }) {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -61,6 +62,7 @@ export default function WellnessLayout({ user }) {
           </nav>
 
           <div className="ml-auto flex items-center gap-3">
+            <ThemeToggle variant="nav" />
             <LanguageSwitcher variant="nav" />
             {isAdmin && (
               <NavLink
