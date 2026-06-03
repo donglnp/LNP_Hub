@@ -2,6 +2,9 @@ import { useState } from "react";
 import { signInWithGoogle, isSupabaseReady } from "../lib/auth";
 import LanguageSwitcher from "../components/LanguageSwitcher";
 import ThemeToggle from "../components/ThemeToggle";
+import ParticleField from "../components/ParticleField";
+import AntigravityHeadline from "../components/AntigravityHeadline";
+import GravityReadout from "../components/GravityReadout";
 import { useT } from "../lib/i18n";
 
 export default function Login() {
@@ -106,53 +109,52 @@ export default function Login() {
         </p>
       </aside>
 
-      <div className="relative hidden lg:block overflow-hidden border-l border-arena-border bg-arena-bg">
-        <div className="absolute inset-0 bg-gradient-to-br from-arena-blue/10 via-arena-bg to-arena-bg" />
-        <div className="absolute inset-0 grid-bg opacity-40" />
-        <div className="absolute inset-0 hero-glow" />
-        <div className="absolute bottom-8 right-8 text-right">
-          <p className="text-[10px] tracking-[0.4em] uppercase text-arena-blue">
-            {t("common.system_online")}
-          </p>
-          <p className="font-display text-5xl font-semibold text-arena-text/80 tracking-tight">
-            HUB
+      <div className="relative hidden lg:block overflow-hidden border-l border-arena-border bg-[#06090F]">
+        <ParticleField />
+        <AntigravityHeadline />
+
+
+        {/* layered gradient overlays for depth */}
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-arena-blue/15 via-transparent to-fuchsia-500/10" />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgba(96,165,250,0.18),transparent_55%)]" />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_80%_75%,rgba(168,85,247,0.14),transparent_55%)]" />
+        <div className="pointer-events-none absolute inset-0 grid-bg opacity-[0.08]" />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,rgba(6,9,15,0.92)_100%)]" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#06090F] via-transparent to-transparent" />
+
+        {/* corner brackets */}
+        <div className="pointer-events-none absolute inset-6">
+          <span className="absolute top-0 left-0 w-6 h-6 border-t border-l border-arena-blue/60" />
+          <span className="absolute top-0 right-0 w-6 h-6 border-t border-r border-arena-blue/60" />
+          <span className="absolute bottom-0 left-0 w-6 h-6 border-b border-l border-arena-blue/60" />
+          <span className="absolute bottom-0 right-0 w-6 h-6 border-b border-r border-arena-blue/60" />
+        </div>
+
+        {/* bottom-left hint */}
+        <div className="pointer-events-none absolute bottom-10 left-10 flex items-center gap-2 rounded-full border border-white/10 bg-black/30 backdrop-blur px-3 py-1.5">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" className="text-arena-blue">
+            <path d="M5 5l6 14 2-6 6-2z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+          </svg>
+          <span className="text-[10px] tracking-[0.3em] uppercase text-white/70 font-mono">
+            move cursor to interact
+          </span>
+        </div>
+
+        {/* bottom-right stats */}
+        <div className="pointer-events-none absolute bottom-10 right-10 font-mono text-right">
+          <div className="flex items-center justify-end gap-3 text-[10px] tracking-[0.3em] uppercase text-white/40">
+            <span><span className="text-arena-blue">●</span> nodes 220</span>
+            <span><span className="text-arena-blue">●</span> 60fps</span>
+            <span><span className="text-arena-blue">●</span> sync</span>
+          </div>
+          <div className="mt-2 flex justify-end">
+            <GravityReadout />
+          </div>
+          <p className="mt-2 text-[9px] tracking-[0.4em] uppercase text-white/25">
+            build 2026.06.03 — opus
           </p>
         </div>
 
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[92%] max-w-[680px]">
-          <div className="absolute -inset-6 rounded-[28px] bg-arena-blue/20 blur-3xl opacity-70" aria-hidden="true" />
-          <div className="absolute -inset-px rounded-[24px] bg-gradient-to-br from-arena-blue/60 via-arena-blue/10 to-transparent opacity-80" aria-hidden="true" />
-
-          <div className="relative rounded-[22px] overflow-hidden border border-arena-border bg-arena-surface/40 backdrop-blur-xl shadow-[0_30px_80px_-20px_rgba(0,0,0,0.6)]">
-            <img
-              src="/team.jpg"
-              alt="LNP team"
-              className="block w-full h-auto object-cover"
-              loading="lazy"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent pointer-events-none" />
-            <div className="absolute inset-0 bg-gradient-to-br from-arena-blue/10 via-transparent to-transparent mix-blend-overlay pointer-events-none" />
-
-            <div className="absolute top-3 left-3 flex items-center gap-1.5 rounded-full border border-white/15 bg-black/30 backdrop-blur px-2.5 py-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-arena-blue shadow-[0_0_8px_#60A5FA] animate-pulse" />
-              <span className="text-[10px] tracking-[0.3em] uppercase text-white/80">Live · Crew</span>
-            </div>
-
-            <div className="absolute bottom-0 inset-x-0 p-5">
-              <div>
-                <p className="text-[10px] tracking-[0.4em] uppercase text-arena-blue/90">The LNP Family</p>
-                <p className="mt-1 text-xs text-white/60">Phan Thiết · 2026</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="absolute -top-3 -right-3 rotate-6 rounded-md border border-white/15 bg-arena-surface/80 backdrop-blur px-2.5 py-1 shadow-lg">
-            <span className="text-[10px] font-mono tracking-widest text-arena-blue">#WeAreLNP</span>
-          </div>
-          <div className="absolute -bottom-4 -left-4 -rotate-3 rounded-md border border-white/10 bg-black/40 backdrop-blur px-2.5 py-1 shadow-lg">
-            <span className="text-[10px] font-mono tracking-widest text-white/70">v2026.05</span>
-          </div>
-        </div>
       </div>
     </div>
   );

@@ -134,3 +134,8 @@ body,
     rgba(255, 255, 255, 0.015) 4px
   );
 }
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}

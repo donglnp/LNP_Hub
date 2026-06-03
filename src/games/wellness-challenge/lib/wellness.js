@@ -87,10 +87,49 @@ export async function upsertEntry(payload) {
   return data;
 }
 
+export async function fetchMyLastEntry(userId) {
+  if (!supabaseHub || !userId) return null;
+  const { data, error } = await supabaseHub
+    .from("wellness_entries")
+    .select(ENTRY_COLS)
+    .eq("user_id", userId)
+    .order("entry_date", { ascending: false })
+    .order("created_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+  if (error) {
+    console.warn("[wellness] fetchMyLastEntry", error);
+    return null;
+  }
+  return data || null;
+}
+
+export async function fetchMyEntryOnDate(userId, entryDate) {
+  if (!supabaseHub || !userId || !entryDate) return null;
+  const { data, error } = await supabaseHub
+    .from("wellness_entries")
+    .select("id, entry_date, status")
+    .eq("user_id", userId)
+    .eq("entry_date", entryDate)
+    .limit(1)
+    .maybeSingle();
+  if (error) {
+    console.warn("[wellness] fetchMyEntryOnDate", error);
+    return null;
+  }
+  return data || null;
+}
+
 // User self-submit: always pending, no photos, no status override.
 export async function createMyEntry(userId, payload) {
   if (!supabaseHub) throw new Error("Supabase not configured");
   if (!userId) throw new Error("Cần đăng nhập");
+  const existing = await fetchMyEntryOnDate(userId, payload.entry_date);
+  if (existing) {
+    const err = new Error("DUPLICATE_DAY");
+    err.code = "DUPLICATE_DAY";
+    throw err;
+  }
   const row = {
     user_id: userId,
     user_email: null,

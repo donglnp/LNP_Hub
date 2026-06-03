@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../lib/AuthContext";
 import { useT } from "../../../lib/i18n";
-import { createMyEntry } from "../lib/wellness";
+import { createMyEntry, fetchMyLastEntry } from "../lib/wellness";
 import { DEVICES, EXERCISE_TYPES, programState } from "../lib/data";
 
 export default function Log() {
@@ -25,6 +25,28 @@ export default function Log() {
   const [saving, setSaving] = useState(false);
   const [topError, setTopError] = useState(null);
   const [showUploadHelp, setShowUploadHelp] = useState(false);
+  const [prefilled, setPrefilled] = useState(false);
+
+  useEffect(() => {
+    if (!user?.id) return;
+    let cancelled = false;
+    fetchMyLastEntry(user.id).then((last) => {
+      if (cancelled || !last) return;
+      setForm((f) => ({
+        ...f,
+        exercise_type: last.exercise_type || f.exercise_type,
+        exercise_other: last.exercise_other || "",
+        duration_min: last.duration_min ? String(last.duration_min) : "",
+        kcal: last.kcal ? String(last.kcal) : "",
+        device: last.device || f.device,
+        device_other: last.device_other || "",
+      }));
+      setPrefilled(true);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [user?.id]);
 
   function set(k, v) {
     setForm((f) => ({ ...f, [k]: v }));
@@ -74,7 +96,11 @@ export default function Log() {
       await createMyEntry(user.id, form);
       navigate("/wellness-challenge/history");
     } catch (e) {
-      setTopError(e.message || String(e));
+      if (e?.code === "DUPLICATE_DAY") {
+        setTopError(t("wc.log_err_duplicate_day"));
+      } else {
+        setTopError(e.message || String(e));
+      }
     } finally {
       setSaving(false);
     }
@@ -99,6 +125,12 @@ export default function Log() {
         {topError && (
           <div className="rounded border border-arena-red/40 bg-arena-red/10 text-arena-red text-sm px-3 py-2">
             {topError}
+          </div>
+        )}
+
+        {prefilled && (
+          <div className="rounded border border-arena-amber/30 bg-arena-amber/10 text-arena-amber text-xs px-3 py-2">
+            {t("wc.log_prefilled_hint")}
           </div>
         )}
 
