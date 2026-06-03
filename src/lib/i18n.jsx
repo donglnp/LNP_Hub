@@ -16,9 +16,9 @@ const dict = {
     ja: "◆ システム稼働中",
   },
   "common.copyright": {
-    en: "© 2026 LNP Technologies Inc.",
-    vi: "© 2026 LNP Technologies Inc.",
-    ja: "© 2026 LNP Technologies Inc.",
+    en: "© 2026 LNP Fun",
+    vi: "© 2026 LNP Fun",
+    ja: "© 2026 LNP Fun",
   },
   "common.source": { en: "source", vi: "nguồn", ja: "ソース" },
   "common.loading": { en: "Loading…", vi: "Đang tải…", ja: "読み込み中…" },
@@ -625,6 +625,16 @@ const dict = {
     ja: "1〜120分",
   },
   "wc.log_err_kcal": { en: "Required > 0", vi: "Bắt buộc > 0", ja: "0より大きい値" },
+  "wc.log_err_duplicate_day": {
+    en: "You can only log one entry per day (see Rules). Edit today's entry in History instead.",
+    vi: "Theo Thể lệ, mỗi ngày chỉ ghi nhận 1 buổi tập. Hãy chỉnh sửa buổi hôm nay trong mục Lịch sử.",
+    ja: "ルールに従い、1日1件のみ記録できます。今日の記録は履歴から編集してください。",
+  },
+  "wc.log_prefilled_hint": {
+    en: "Pre-filled from your last entry — adjust the numbers for today before submitting.",
+    vi: "Đã điền sẵn theo buổi tập gần nhất — nhớ chỉnh lại số liệu cho hôm nay trước khi gửi.",
+    ja: "前回の記録を自動入力しました。送信前に今日の数値に修正してください。",
+  },
   "wc.history_btn_delete": { en: "Delete", vi: "Xoá", ja: "削除" },
   "wc.history_confirm_delete": {
     en: "Delete this pending entry?",
