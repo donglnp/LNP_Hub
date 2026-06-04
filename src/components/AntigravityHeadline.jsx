@@ -53,11 +53,11 @@ export default function AmbientWaves({ className = "" }) {
     }
 
     const LAYERS = [
-      { amp: 0.10, freq: 0.0042, speed: 0.00018, phase: 0.0, yBase: 0.30, hue: 205, sat: 80, light: 60, alpha: 0.10, pullStrength: 0.08 },
-      { amp: 0.08, freq: 0.0035, speed: 0.00022, phase: 1.7, yBase: 0.45, hue: 220, sat: 85, light: 65, alpha: 0.09, pullStrength: 0.12 },
-      { amp: 0.12, freq: 0.0028, speed: 0.00015, phase: 3.1, yBase: 0.55, hue: 260, sat: 70, light: 60, alpha: 0.08, pullStrength: 0.16 },
-      { amp: 0.09, freq: 0.0050, speed: 0.00025, phase: 4.8, yBase: 0.65, hue: 195, sat: 90, light: 70, alpha: 0.07, pullStrength: 0.20 },
-      { amp: 0.07, freq: 0.0038, speed: 0.00020, phase: 6.2, yBase: 0.78, hue: 280, sat: 65, light: 60, alpha: 0.06, pullStrength: 0.24 },
+      { amp: 0.10, freq: 0.0042, speed: 0.00090, phase: 0.0, yBase: 0.30, hue: 205, sat: 80, light: 60, alpha: 0.10, pullStrength: 0.08 },
+      { amp: 0.08, freq: 0.0035, speed: 0.00110, phase: 1.7, yBase: 0.45, hue: 220, sat: 85, light: 65, alpha: 0.09, pullStrength: 0.12 },
+      { amp: 0.12, freq: 0.0028, speed: 0.00075, phase: 3.1, yBase: 0.55, hue: 260, sat: 70, light: 60, alpha: 0.08, pullStrength: 0.16 },
+      { amp: 0.09, freq: 0.0050, speed: 0.00125, phase: 4.8, yBase: 0.65, hue: 195, sat: 90, light: 70, alpha: 0.07, pullStrength: 0.20 },
+      { amp: 0.07, freq: 0.0038, speed: 0.00100, phase: 6.2, yBase: 0.78, hue: 280, sat: 65, light: 60, alpha: 0.06, pullStrength: 0.24 },
     ];
 
     resize();

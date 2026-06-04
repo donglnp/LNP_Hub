@@ -2,7 +2,7 @@ import { useState } from "react";
 import { signInWithGoogle, isSupabaseReady } from "../lib/auth";
 import LanguageSwitcher from "../components/LanguageSwitcher";
 import ThemeToggle from "../components/ThemeToggle";
-import ParticleField from "../components/ParticleField";
+import Starfield from "../components/Starfield";
 import AntigravityHeadline from "../components/AntigravityHeadline";
 import GravityReadout from "../components/GravityReadout";
 import { useT } from "../lib/i18n";
@@ -109,18 +109,13 @@ export default function Login() {
         </p>
       </aside>
 
-      <div className="relative hidden lg:block overflow-hidden border-l border-arena-border bg-[#06090F]">
-        <ParticleField />
-        <AntigravityHeadline />
+      <div className="relative hidden lg:block overflow-hidden border-l border-arena-border bg-[#05080F]">
+        <Starfield />
+        {/* <AntigravityHeadline /> */}
 
-
-        {/* layered gradient overlays for depth */}
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-arena-blue/15 via-transparent to-fuchsia-500/10" />
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgba(96,165,250,0.18),transparent_55%)]" />
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_80%_75%,rgba(168,85,247,0.14),transparent_55%)]" />
-        <div className="pointer-events-none absolute inset-0 grid-bg opacity-[0.08]" />
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,rgba(6,9,15,0.92)_100%)]" />
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#06090F] via-transparent to-transparent" />
+        {/* subtle overlays for depth */}
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(5,8,15,0.85)_100%)]" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#05080F] via-transparent to-transparent" />
 
         {/* corner brackets */}
         <div className="pointer-events-none absolute inset-6">
@@ -150,9 +145,6 @@ export default function Login() {
           <div className="mt-2 flex justify-end">
             <GravityReadout />
           </div>
-          <p className="mt-2 text-[9px] tracking-[0.4em] uppercase text-white/25">
-            build 2026.06.03 — opus
-          </p>
         </div>
 
       </div>
