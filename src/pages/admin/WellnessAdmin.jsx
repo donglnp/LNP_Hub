@@ -137,10 +137,16 @@ export default function WellnessAdmin() {
   );
 }
 
+const ENTRY_VIEWS = [
+  { id: "flat", label: "Theo thời gian" },
+  { id: "grouped", label: "Theo người" },
+];
+
 export function EntriesTab() {
   const { entries, profiles, onEdit, onAdd, onDelete } = useOutletContext();
   const [search, setSearch] = useState("");
   const [filterUser, setFilterUser] = useState("all");
+  const [view, setView] = useState("flat");
   const profileById = useMemo(
     () => Object.fromEntries(profiles.map((p) => [p.id, p])),
     [profiles]
@@ -169,6 +175,22 @@ export function EntriesTab() {
         <h2 className="font-display text-2xl font-semibold mr-auto">
           Buổi tập · {filtered.length}
         </h2>
+        <span className="inline-flex rounded border border-arena-border overflow-hidden text-[11px]">
+          {ENTRY_VIEWS.map((v) => (
+            <button
+              key={v.id}
+              type="button"
+              onClick={() => setView(v.id)}
+              className={`px-3 py-2 tracking-wide transition ${
+                view === v.id
+                  ? "bg-arena-blue text-arena-bg"
+                  : "text-arena-muted hover:text-arena-text"
+              }`}
+            >
+              {v.label}
+            </button>
+          ))}
+        </span>
         <input
           value={search}
           onChange={(e) => setSearch(e.target.value)}
@@ -197,12 +219,21 @@ export function EntriesTab() {
         </button>
       </div>
 
-      <div className="rounded-lg border border-arena-border bg-arena-surface overflow-x-auto">
-        {filtered.length === 0 ? (
+      {filtered.length === 0 ? (
+        <div className="rounded-lg border border-arena-border bg-arena-surface">
           <p className="py-12 text-sm text-arena-muted text-center">
             Chưa có buổi tập nào.
           </p>
-        ) : (
+        </div>
+      ) : view === "grouped" ? (
+        <GroupedEntries
+          entries={filtered}
+          profileById={profileById}
+          onEdit={onEdit}
+          onDelete={onDelete}
+        />
+      ) : (
+        <div className="rounded-lg border border-arena-border bg-arena-surface overflow-x-auto">
           <table className="w-full text-sm min-w-[860px]">
             <thead>
               <tr className="text-[10px] tracking-[0.25em] uppercase text-arena-muted border-b border-arena-border">
@@ -218,87 +249,243 @@ export function EntriesTab() {
               </tr>
             </thead>
             <tbody>
-              {filtered.map((e) => {
-                const p = profileById[e.user_id];
-                const ex = findExercise(e.exercise_type);
-                const dev = findDevice(e.device);
-                const isGuest = !e.user_id && !!e.user_email;
-                return (
-                  <tr
-                    key={e.id}
-                    className="border-b border-arena-border/60 last:border-0 hover:bg-arena-card/40"
-                  >
-                    <td className="px-4 py-3">
-                      {isGuest ? (
-                        <>
-                          <p className="font-medium text-arena-muted italic">
-                            {e.user_email}
-                          </p>
-                          <p className="text-[10px] tracking-[0.2em] uppercase text-arena-muted">
-                            chưa login
-                          </p>
-                        </>
-                      ) : (
-                        <>
-                          <p className="font-medium">{p?.full_name || "—"}</p>
-                          <p className="text-[11px] text-arena-muted">
-                            {p?.email}
-                          </p>
-                        </>
-                      )}
-                    </td>
-                    <td className="px-4 py-3 text-arena-muted whitespace-nowrap">
-                      {formatDate(e.entry_date)}
-                    </td>
-                    <td className="px-4 py-3">
-                      <span className="inline-flex items-center gap-2">
-                        <span className="text-lg">{ex.icon}</span>
-                        {e.exercise_type === "other" && e.exercise_other
-                          ? e.exercise_other
-                          : ex.label}
-                      </span>
-                    </td>
-                    <td className="px-4 py-3 text-right font-mono">
-                      {e.duration_min}
-                    </td>
-                    <td className="px-4 py-3 text-right font-mono text-arena-blue font-semibold">
-                      {e.kcal.toLocaleString("vi-VN")}
-                    </td>
-                    <td className="px-4 py-3 text-xs text-arena-muted">
-                      {e.device === "other" && e.device_other
-                        ? e.device_other
-                        : dev?.label || "—"}
-                    </td>
-                    <td className="px-4 py-3">
-                      <div className="flex gap-1">
-                        <PhotoChip url={e.photo_before_url} />
-                        <PhotoChip url={e.photo_after_url} />
-                      </div>
-                    </td>
-                    <td className="px-4 py-3">
-                      <StatusBadge status={e.status} />
-                    </td>
-                    <td className="px-4 py-3 text-right whitespace-nowrap">
-                      <button
-                        onClick={() => onEdit(e)}
-                        className="text-xs text-arena-blue hover:underline mr-3"
-                      >
-                        Sửa
-                      </button>
-                      <button
-                        onClick={() => onDelete(e.id)}
-                        className="text-xs text-arena-red hover:underline"
-                      >
-                        Xoá
-                      </button>
-                    </td>
-                  </tr>
-                );
-              })}
+              {filtered.map((e) => (
+                <EntryRow
+                  key={e.id}
+                  entry={e}
+                  profile={profileById[e.user_id]}
+                  showPerson
+                  onEdit={onEdit}
+                  onDelete={onDelete}
+                />
+              ))}
             </tbody>
           </table>
-        )}
-      </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function EntryRow({ entry: e, profile: p, showPerson, onEdit, onDelete }) {
+  const ex = findExercise(e.exercise_type);
+  const dev = findDevice(e.device);
+  const isGuest = !e.user_id && !!e.user_email;
+  return (
+    <tr className="border-b border-arena-border/60 last:border-0 hover:bg-arena-card/40">
+      {showPerson && (
+        <td className="px-4 py-3">
+          {isGuest ? (
+            <>
+              <p className="font-medium text-arena-muted italic">
+                {e.user_email}
+              </p>
+              <p className="text-[10px] tracking-[0.2em] uppercase text-arena-muted">
+                chưa login
+              </p>
+            </>
+          ) : (
+            <>
+              <p className="font-medium">{p?.full_name || "—"}</p>
+              <p className="text-[11px] text-arena-muted">{p?.email}</p>
+            </>
+          )}
+        </td>
+      )}
+      <td className="px-4 py-3 text-arena-muted whitespace-nowrap">
+        {formatDate(e.entry_date)}
+      </td>
+      <td className="px-4 py-3">
+        <span className="inline-flex items-center gap-2">
+          <span className="text-lg">{ex.icon}</span>
+          {e.exercise_type === "other" && e.exercise_other
+            ? e.exercise_other
+            : ex.label}
+        </span>
+      </td>
+      <td className="px-4 py-3 text-right font-mono">{e.duration_min}</td>
+      <td className="px-4 py-3 text-right font-mono text-arena-blue font-semibold">
+        {e.kcal.toLocaleString("vi-VN")}
+      </td>
+      <td className="px-4 py-3 text-xs text-arena-muted">
+        {e.device === "other" && e.device_other
+          ? e.device_other
+          : dev?.label || "—"}
+      </td>
+      <td className="px-4 py-3">
+        <div className="flex gap-1">
+          <PhotoChip url={e.photo_before_url} />
+          <PhotoChip url={e.photo_after_url} />
+        </div>
+      </td>
+      <td className="px-4 py-3">
+        <StatusBadge status={e.status} />
+      </td>
+      <td className="px-4 py-3 text-right whitespace-nowrap">
+        <button
+          onClick={() => onEdit(e)}
+          className="text-xs text-arena-blue hover:underline mr-3"
+        >
+          Sửa
+        </button>
+        <button
+          onClick={() => onDelete(e.id)}
+          className="text-xs text-arena-red hover:underline"
+        >
+          Xoá
+        </button>
+      </td>
+    </tr>
+  );
+}
+
+function GroupedEntries({ entries, profileById, onEdit, onDelete }) {
+  const groups = useMemo(() => {
+    const map = new Map();
+    for (const e of entries) {
+      const key = e.user_id || `email:${e.user_email}`;
+      let g = map.get(key);
+      if (!g) {
+        const p = profileById[e.user_id];
+        const isGuest = !e.user_id && !!e.user_email;
+        g = {
+          key,
+          name: isGuest ? e.user_email : p?.full_name || "—",
+          email: isGuest ? null : p?.email,
+          avatar: p?.avatar_url,
+          isGuest,
+          entries: [],
+          minutes: 0,
+          kcal: 0,
+          pending: 0,
+        };
+        map.set(key, g);
+      }
+      g.entries.push(e);
+      g.minutes += e.duration_min || 0;
+      g.kcal += e.kcal || 0;
+      if (e.status === "pending") g.pending += 1;
+    }
+    return [...map.values()].sort((a, b) => b.kcal - a.kcal);
+  }, [entries, profileById]);
+
+  const [open, setOpen] = useState(() => new Set());
+  function toggle(key) {
+    setOpen((prev) => {
+      const next = new Set(prev);
+      next.has(key) ? next.delete(key) : next.add(key);
+      return next;
+    });
+  }
+
+  return (
+    <div className="space-y-2">
+      {groups.map((g) => {
+        const isOpen = open.has(g.key);
+        return (
+          <div
+            key={g.key}
+            className="rounded-lg border border-arena-border bg-arena-surface overflow-hidden"
+          >
+            <button
+              type="button"
+              onClick={() => toggle(g.key)}
+              className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-arena-card/40"
+            >
+              <span
+                className={`text-arena-muted transition-transform ${
+                  isOpen ? "rotate-90" : ""
+                }`}
+              >
+                ▸
+              </span>
+              <span className="w-8 h-8 rounded-full border border-arena-border bg-arena-card grid place-items-center text-[10px] font-semibold overflow-hidden shrink-0">
+                {g.avatar ? (
+                  <img
+                    src={g.avatar}
+                    alt=""
+                    referrerPolicy="no-referrer"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  (g.name || "?")
+                    .split(" ")
+                    .map((s) => s[0])
+                    .join("")
+                    .slice(0, 2)
+                    .toUpperCase()
+                )}
+              </span>
+              <span className="min-w-0">
+                <p
+                  className={`font-medium truncate ${
+                    g.isGuest ? "text-arena-muted italic" : ""
+                  }`}
+                >
+                  {g.name}
+                </p>
+                {g.email ? (
+                  <p className="text-[11px] text-arena-muted truncate">
+                    {g.email}
+                  </p>
+                ) : (
+                  g.isGuest && (
+                    <p className="text-[10px] tracking-[0.2em] uppercase text-arena-muted">
+                      chưa login
+                    </p>
+                  )
+                )}
+              </span>
+              <span className="ml-auto flex items-center gap-2 text-[11px] whitespace-nowrap">
+                {g.pending > 0 && (
+                  <span className="px-2 py-1 rounded border text-arena-amber border-arena-amber/30 bg-arena-amber/10">
+                    {g.pending} chờ duyệt
+                  </span>
+                )}
+                <span className="px-2 py-1 rounded border border-arena-border text-arena-muted">
+                  {g.entries.length} buổi
+                </span>
+                <span className="px-2 py-1 rounded border border-arena-border text-arena-muted font-mono">
+                  {g.minutes.toLocaleString("vi-VN")} phút
+                </span>
+                <span className="px-2 py-1 rounded border border-arena-border text-arena-blue font-semibold font-mono">
+                  {g.kcal.toLocaleString("vi-VN")} kcal
+                </span>
+              </span>
+            </button>
+
+            {isOpen && (
+              <div className="border-t border-arena-border overflow-x-auto">
+                <table className="w-full text-sm min-w-[720px]">
+                  <thead>
+                    <tr className="text-[10px] tracking-[0.25em] uppercase text-arena-muted border-b border-arena-border">
+                      <th className="px-4 py-2 text-left">Ngày</th>
+                      <th className="px-4 py-2 text-left">Loại</th>
+                      <th className="px-4 py-2 text-right">Phút</th>
+                      <th className="px-4 py-2 text-right">kcal</th>
+                      <th className="px-4 py-2 text-left">Thiết bị</th>
+                      <th className="px-4 py-2 text-left">Ảnh</th>
+                      <th className="px-4 py-2 text-left">Trạng thái</th>
+                      <th className="px-4 py-2 text-right"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {g.entries.map((e) => (
+                      <EntryRow
+                        key={e.id}
+                        entry={e}
+                        profile={profileById[e.user_id]}
+                        onEdit={onEdit}
+                        onDelete={onDelete}
+                      />
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+        );
+      })}
     </div>
   );
 }
