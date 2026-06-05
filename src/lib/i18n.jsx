@@ -435,7 +435,7 @@ const dict = {
   "rules.cta": { en: "How it works", vi: "Cách chơi", ja: "ルール" },
   "rules.title": {
     en: "How LNP Arena Works",
-    vi: "Luật chơi LNP Arena",
+    vi: "Cách chơi LNP Arena",
     ja: "LNP Arena ルール",
   },
   "rules.section_scoring": {
@@ -535,7 +535,7 @@ const dict = {
     vi: "Bảng xếp hạng",
     ja: "ランキング",
   },
-  "wc.tab_rules": { en: "Rules", vi: "Luật chơi", ja: "ルール" },
+  "wc.tab_rules": { en: "Rules", vi: "Cách chơi", ja: "ルール" },
   "wc.tab_log": { en: "Log workout", vi: "Ghi buổi tập", ja: "記録する" },
 
   // ---------- Wellness: self-submit (Log page) ----------
@@ -657,9 +657,9 @@ const dict = {
     ja: "写真を {format} の形式で命名します — 例：{ex1} と {ex2}。",
   },
   "wc.upload_help_step_name_format": {
-    en: "yearmonthday_in / out",
-    vi: "nămthángngày_in / out",
-    ja: "年月日_in / out",
+    en: "daymonthyear_in / out",
+    vi: "ngàythángnăm_in / out",
+    ja: "日月年_in / out",
   },
   "wc.upload_help_step_upload": {
     en: "Click {action} and choose the photo to upload.",
@@ -838,12 +838,12 @@ const dict = {
   },
   "wc.empty_upcoming_sub": {
     en: "Kick-off date: {date}. Read the rules and get your tracking devices ready.",
-    vi: "Ngày khởi động: {date}. Hãy đọc luật chơi và chuẩn bị thiết bị đo nhé.",
+    vi: "Ngày khởi động: {date}. Hãy đọc cách chơi và chuẩn bị thiết bị đo nhé.",
     ja: "開始日: {date}。ルールを読んで計測機器を準備しましょう。",
   },
   "wc.empty_upcoming_cta": {
     en: "Read the rules",
-    vi: "Đọc luật chơi",
+    vi: "Đọc cách chơi",
     ja: "ルールを読む",
   },
   "wc.empty_ended_title": {
@@ -895,7 +895,7 @@ const dict = {
     ja: "週間目標: {kpi} kcal · 今週残り {days} 日",
   },
   "wc.btn_history": { en: "History", vi: "Xem lịch sử", ja: "履歴を見る" },
-  "wc.btn_rules": { en: "Rules", vi: "Luật chơi", ja: "ルール" },
+  "wc.btn_rules": { en: "Rules", vi: "Cách chơi", ja: "ルール" },
   "wc.stat_this_month": {
     en: "This month",
     vi: "Tháng hiện tại",
@@ -1098,7 +1098,7 @@ const dict = {
   // ---------- Wellness: Rules ----------
   "wc.rules_eyebrow": {
     en: "🌿 Rules",
-    vi: "🌿 Luật chơi",
+    vi: "🌿 Cách chơi",
     ja: "🌿 ルール",
   },
   "wc.rules_title": {
@@ -1380,7 +1380,7 @@ const dict = {
     vi: "Bạn có chắc muốn đóng (xóa) sự kiện này? Toàn bộ đăng ký và kết quả bắt cặp sẽ bị xóa vĩnh viễn.",
     ja: "本当にこのイベントを閉じますか？すべての登録とマッチングが完全に削除されます。",
   },
-  "santa.rules_title": { en: "How It Works", vi: "Luật chơi", ja: "ルール" },
+  "santa.rules_title": { en: "How It Works", vi: "Cách chơi", ja: "ルール" },
   "santa.rule_1": {
     en: "Register your wishlist during the open registration phase.",
     vi: "Đăng ký danh sách quà mong muốn trong giai đoạn mở đăng ký.",

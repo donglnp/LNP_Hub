@@ -370,8 +370,8 @@ function UploadHelpModal({ onClose }) {
           <li>
             {fillNodes(t("wc.upload_help_step_name"), {
               format: strong("wc.upload_help_step_name_format"),
-              ex1: <span className="text-arena-text">20260605_in</span>,
-              ex2: <span className="text-arena-text">20260606_out</span>,
+              ex1: <span className="text-arena-text">05062026_in</span>,
+              ex2: <span className="text-arena-text">05062026_out</span>,
             })}
           </li>
           <li>
@@ -407,8 +407,8 @@ function UploadHelpModal({ onClose }) {
           <li>
             {fillNodes(t("wc.upload_help_slack_step_send"), {
               format: strong("wc.upload_help_step_name_format"),
-              ex1: <span className="text-arena-text">20260605_in</span>,
-              ex2: <span className="text-arena-text">20260606_out</span>,
+              ex1: <span className="text-arena-text">05062026_in</span>,
+              ex2: <span className="text-arena-text">05062026_out</span>,
             })}
           </li>
           <li>
