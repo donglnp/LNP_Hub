@@ -29,6 +29,15 @@ export default {
       boxShadow: {
         glow: "0 0 0 1px rgb(var(--arena-green)), 0 0 24px -8px rgb(var(--arena-green))",
       },
+      keyframes: {
+        "readout-in": {
+          "0%": { opacity: "0", transform: "translateY(0.45em)", filter: "blur(1px)" },
+          "100%": { opacity: "1", transform: "translateY(0)", filter: "blur(0)" },
+        },
+      },
+      animation: {
+        "readout-in": "readout-in 450ms cubic-bezier(.2,.9,.2,1)",
+      },
     },
   },
   plugins: [],

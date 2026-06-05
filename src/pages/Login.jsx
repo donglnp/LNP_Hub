@@ -6,9 +6,12 @@ import Starfield from "../components/Starfield";
 import AntigravityHeadline from "../components/AntigravityHeadline";
 import GravityReadout from "../components/GravityReadout";
 import { useT } from "../lib/i18n";
+import { useTheme } from "../lib/ThemeContext";
 
 export default function Login() {
   const { t } = useT();
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
   const [status, setStatus] = useState("idle");
   const [error, setError] = useState(null);
 
@@ -109,13 +112,27 @@ export default function Login() {
         </p>
       </aside>
 
-      <div className="relative hidden lg:block overflow-hidden border-l border-arena-border bg-[#05080F]">
+      <div
+        className={`relative hidden lg:block overflow-hidden border-l border-arena-border ${
+          isDark ? "bg-[#05080F]" : "bg-[#EAF0FB]"
+        }`}
+      >
         <Starfield />
         {/* <AntigravityHeadline /> */}
 
         {/* subtle overlays for depth */}
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(5,8,15,0.85)_100%)]" />
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#05080F] via-transparent to-transparent" />
+        <div
+          className={`pointer-events-none absolute inset-0 ${
+            isDark
+              ? "bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(5,8,15,0.85)_100%)]"
+              : "bg-[radial-gradient(ellipse_at_center,transparent_45%,rgba(234,240,251,0.7)_100%)]"
+          }`}
+        />
+        <div
+          className={`pointer-events-none absolute inset-0 bg-gradient-to-t via-transparent to-transparent ${
+            isDark ? "from-[#05080F]" : "from-[#EAF0FB]"
+          }`}
+        />
 
         {/* corner brackets */}
         <div className="pointer-events-none absolute inset-6">
@@ -126,18 +143,30 @@ export default function Login() {
         </div>
 
         {/* bottom-left hint */}
-        <div className="pointer-events-none absolute bottom-10 left-10 flex items-center gap-2 rounded-full border border-white/10 bg-black/30 backdrop-blur px-3 py-1.5">
+        <div
+          className={`pointer-events-none absolute bottom-10 left-10 flex items-center gap-2 rounded-full border backdrop-blur px-3 py-1.5 ${
+            isDark ? "border-white/10 bg-black/30" : "border-black/10 bg-white/40"
+          }`}
+        >
           <svg width="10" height="10" viewBox="0 0 24 24" fill="none" className="text-arena-blue">
             <path d="M5 5l6 14 2-6 6-2z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
           </svg>
-          <span className="text-[10px] tracking-[0.3em] uppercase text-white/70 font-mono">
+          <span
+            className={`text-[10px] tracking-[0.3em] uppercase font-mono ${
+              isDark ? "text-white/70" : "text-slate-600"
+            }`}
+          >
             move cursor to interact
           </span>
         </div>
 
         {/* bottom-right stats */}
         <div className="pointer-events-none absolute bottom-10 right-10 font-mono text-right">
-          <div className="flex items-center justify-end gap-3 text-[10px] tracking-[0.3em] uppercase text-white/40">
+          <div
+            className={`flex items-center justify-end gap-3 text-[10px] tracking-[0.3em] uppercase ${
+              isDark ? "text-white/40" : "text-slate-500/70"
+            }`}
+          >
             <span><span className="text-arena-blue">●</span> nodes 220</span>
             <span><span className="text-arena-blue">●</span> 60fps</span>
             <span><span className="text-arena-blue">●</span> sync</span>

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useTheme } from "../lib/ThemeContext";
 
 /**
  * Anime.js-style digit roulette readout. Cycles through a small set of
@@ -56,6 +57,8 @@ function Digit({ target }) {
 
 export default function GravityReadout({ className = "" }) {
   const [idx, setIdx] = useState(0);
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
   useEffect(() => {
     const id = setInterval(() => setIdx((i) => (i + 1) % STATES.length), 3400);
     return () => clearInterval(id);
@@ -64,16 +67,34 @@ export default function GravityReadout({ className = "" }) {
   return (
     <div
       className={
-        "font-mono text-[10px] tracking-[0.3em] uppercase text-white/60 " + className
+        `font-mono text-[10px] tracking-[0.3em] uppercase ${
+          isDark ? "text-white/60" : "text-slate-500"
+        } ` + className
       }
     >
       <div className="flex items-baseline gap-2">
-        <span className="text-white/35">{s.label}</span>
+        <span
+          key={idx}
+          className={`inline-block animate-readout-in ${
+            isDark ? "text-white/35" : "text-slate-400"
+          }`}
+        >
+          {s.label}
+        </span>
         <span className="text-arena-blue/80 text-base tracking-normal normal-case">
           {[...s.value].map((c, i) => (
             <Digit key={`${idx}-${i}`} target={c} />
           ))}
-          {s.unit && <span className="ml-1 text-white/40 text-[10px]">{s.unit}</span>}
+          {s.unit && (
+            <span
+              key={idx}
+              className={`ml-1 inline-block animate-readout-in text-[10px] ${
+                isDark ? "text-white/40" : "text-slate-400"
+              }`}
+            >
+              {s.unit}
+            </span>
+          )}
         </span>
       </div>
     </div>

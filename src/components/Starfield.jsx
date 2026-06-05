@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { useTheme } from "../lib/ThemeContext";
 
 // Named constellations — normalized coords roughly within [-1, 1].
 // Edges reference node indices.
@@ -97,7 +98,11 @@ const CONSTELLATIONS = [
   },
 ];
 
-export default function Starfield() {
+export default function Starfield({ theme: themeProp }) {
+  // Self-derives from the active theme; pass `theme` only to force a variant
+  // (e.g. the login panel stays dark regardless of light/dark mode).
+  const { theme: ctxTheme } = useTheme();
+  const theme = themeProp ?? ctxTheme;
   const canvasRef = useRef(null);
   const mouseRef = useRef({ x: 0, y: 0, active: 0, lastSpawnX: -9999, lastSpawnY: -9999, cooldown: 0 });
 
@@ -105,6 +110,49 @@ export default function Starfield() {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
+
+    // Theme-aware palette. Dark = additive glow on near-black; light = soft
+    // translucent dots on a pale sky (normal blending so dots stay visible).
+    const dark = theme !== "light";
+    const P = dark
+      ? {
+          bg: "#05080F",
+          blend: "lighter",
+          centerGlow: ["rgba(60, 90, 180, 0.18)", "rgba(20, 30, 70, 0.08)", "rgba(5, 8, 15, 0)"],
+          nebulaSat: 80,
+          nebulaLight: 60,
+          starGlow: (hue, a) => [
+            `hsla(${hue}, 90%, 85%, ${a})`,
+            `hsla(${hue}, 85%, 70%, ${a * 0.35})`,
+          ],
+          starCore: (hue, a) => `hsla(${hue}, 100%, 96%, ${Math.min(1, a * 1.2)})`,
+          edge: (hue, a) => `hsla(${hue}, 90%, 80%, ${a})`,
+          nodeGlow: (hue, a) => `hsla(${hue}, 100%, 92%, ${a})`,
+          nodeCore: (hue, a) => `hsla(${hue}, 100%, 98%, ${a})`,
+          labelBg: (a) => `rgba(5, 8, 15, ${a})`,
+          labelText: (hue, a) => `hsla(${hue}, 100%, 90%, ${a})`,
+          shootTail: (a) => [`rgba(180, 210, 255, 0)`, `rgba(220, 235, 255, ${a})`],
+          shootHead: (a) => `rgba(255,255,255,${a})`,
+        }
+      : {
+          bg: "#EAF0FB",
+          blend: "source-over",
+          centerGlow: ["rgba(120, 150, 230, 0.14)", "rgba(150, 170, 220, 0.05)", "rgba(234, 240, 251, 0)"],
+          nebulaSat: 65,
+          nebulaLight: 70,
+          starGlow: (hue, a) => [
+            `hsla(${hue}, 70%, 55%, ${a * 0.28})`,
+            `hsla(${hue}, 70%, 50%, ${a * 0.12})`,
+          ],
+          starCore: (hue, a) => `hsla(${hue}, 75%, 48%, ${Math.min(0.7, a * 0.7)})`,
+          edge: (hue, a) => `hsla(${hue}, 70%, 48%, ${a})`,
+          nodeGlow: (hue, a) => `hsla(${hue}, 75%, 55%, ${a * 0.5})`,
+          nodeCore: (hue, a) => `hsla(${hue}, 75%, 42%, ${a})`,
+          labelBg: (a) => `rgba(255, 255, 255, ${a * 1.4})`,
+          labelText: (hue, a) => `hsla(${hue}, 75%, 38%, ${a})`,
+          shootTail: (a) => [`rgba(80, 120, 220, 0)`, `rgba(60, 100, 210, ${a})`],
+          shootHead: (a) => `rgba(90, 130, 230, ${a})`,
+        };
     let raf = 0;
     let stars = [];
     let shootingStars = [];
@@ -223,7 +271,7 @@ export default function Starfield() {
       last = now;
       acc += dt;
 
-      ctx.fillStyle = "#05080F";
+      ctx.fillStyle = P.bg;
       ctx.fillRect(0, 0, w, h);
 
       const grad = ctx.createRadialGradient(
@@ -234,19 +282,19 @@ export default function Starfield() {
         h * 0.3,
         Math.max(w, h)
       );
-      grad.addColorStop(0, "rgba(60, 90, 180, 0.18)");
-      grad.addColorStop(0.5, "rgba(20, 30, 70, 0.08)");
-      grad.addColorStop(1, "rgba(5, 8, 15, 0)");
+      grad.addColorStop(0, P.centerGlow[0]);
+      grad.addColorStop(0.5, P.centerGlow[1]);
+      grad.addColorStop(1, P.centerGlow[2]);
       ctx.fillStyle = grad;
       ctx.fillRect(0, 0, w, h);
 
-      ctx.globalCompositeOperation = "lighter";
+      ctx.globalCompositeOperation = P.blend;
       for (const n of nebulaPuffs) {
         n.phase += n.drift * dt;
         const px = n.x + Math.cos(n.phase) * 18;
         const py = n.y + Math.sin(n.phase * 0.8) * 14;
         const g = ctx.createRadialGradient(px, py, 0, px, py, n.r);
-        g.addColorStop(0, `hsla(${n.hue}, 80%, 60%, ${n.a})`);
+        g.addColorStop(0, `hsla(${n.hue}, ${P.nebulaSat}%, ${P.nebulaLight}%, ${n.a})`);
         g.addColorStop(1, "hsla(0, 0%, 0%, 0)");
         ctx.fillStyle = g;
         ctx.beginPath();
@@ -259,7 +307,7 @@ export default function Starfield() {
       const my = mouseRef.current.y;
       const mActive = mouseRef.current.active;
 
-      ctx.globalCompositeOperation = "lighter";
+      ctx.globalCompositeOperation = P.blend;
       for (const s of stars) {
         const tw =
           0.55 + 0.45 * Math.sin(acc * s.twSpeed + s.twPhase);
@@ -282,15 +330,16 @@ export default function Starfield() {
         const alpha = s.baseAlpha * tw;
         const glowR = s.r * (2.2 + tw * 1.6);
         const g = ctx.createRadialGradient(px, py, 0, px, py, glowR);
-        g.addColorStop(0, `hsla(${s.hue}, 90%, 85%, ${alpha})`);
-        g.addColorStop(0.4, `hsla(${s.hue}, 85%, 70%, ${alpha * 0.35})`);
+        const [gs0, gs1] = P.starGlow(s.hue, alpha);
+        g.addColorStop(0, gs0);
+        g.addColorStop(0.4, gs1);
         g.addColorStop(1, "hsla(0,0%,0%,0)");
         ctx.fillStyle = g;
         ctx.beginPath();
         ctx.arc(px, py, glowR, 0, Math.PI * 2);
         ctx.fill();
 
-        ctx.fillStyle = `hsla(${s.hue}, 100%, 96%, ${Math.min(1, alpha * 1.2)})`;
+        ctx.fillStyle = P.starCore(s.hue, alpha);
         ctx.beginPath();
         ctx.arc(px, py, s.r, 0, Math.PI * 2);
         ctx.fill();
@@ -324,7 +373,7 @@ export default function Starfield() {
           if (segT <= 0) continue;
           const ex = a.x + (b.x - a.x) * segT;
           const ey = a.y + (b.y - a.y) * segT;
-          ctx.strokeStyle = `hsla(${c.hue}, 90%, 80%, ${0.55 * fade})`;
+          ctx.strokeStyle = P.edge(c.hue, 0.55 * fade);
           ctx.lineWidth = 1;
           ctx.beginPath();
           ctx.moveTo(a.x, a.y);
@@ -336,14 +385,14 @@ export default function Starfield() {
         for (const n of c.nodes) {
           const r = 1.8;
           const g = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, 10);
-          g.addColorStop(0, `hsla(${c.hue}, 100%, 92%, ${0.9 * fade})`);
+          g.addColorStop(0, P.nodeGlow(c.hue, 0.9 * fade));
           g.addColorStop(1, "hsla(0,0%,0%,0)");
           ctx.fillStyle = g;
           ctx.beginPath();
           ctx.arc(n.x, n.y, 10, 0, Math.PI * 2);
           ctx.fill();
 
-          ctx.fillStyle = `hsla(${c.hue}, 100%, 98%, ${fade})`;
+          ctx.fillStyle = P.nodeCore(c.hue, fade);
           ctx.beginPath();
           ctx.arc(n.x, n.y, r, 0, Math.PI * 2);
           ctx.fill();
@@ -361,12 +410,12 @@ export default function Starfield() {
           ctx.textBaseline = "alphabetic";
           const text = c.name.toUpperCase();
           const textW = ctx.measureText(text).width;
-          ctx.fillStyle = `rgba(5, 8, 15, ${0.45 * fade * labelReveal})`;
+          ctx.fillStyle = P.labelBg(0.45 * fade * labelReveal);
           ctx.fillRect(lx - textW / 2 - 6, ly - 10, textW + 12, 14);
-          ctx.fillStyle = `hsla(${c.hue}, 100%, 90%, ${fade * labelReveal})`;
+          ctx.fillStyle = P.labelText(c.hue, fade * labelReveal);
           ctx.fillText(text, lx, ly);
           // tracking dot connecting label to its star
-          ctx.fillStyle = `hsla(${c.hue}, 100%, 90%, ${0.7 * fade * labelReveal})`;
+          ctx.fillStyle = P.labelText(c.hue, 0.7 * fade * labelReveal);
           ctx.beginPath();
           ctx.arc(lx, ly + 8, 1, 0, Math.PI * 2);
           ctx.fill();
@@ -395,8 +444,9 @@ export default function Starfield() {
         const tailY = ss.y - Math.sin(ang) * ss.len;
         const fade = Math.sin(Math.PI * t);
         const lg = ctx.createLinearGradient(tailX, tailY, nx, ny);
-        lg.addColorStop(0, "rgba(180, 210, 255, 0)");
-        lg.addColorStop(1, `rgba(220, 235, 255, ${0.95 * fade})`);
+        const [st0, st1] = P.shootTail(0.95 * fade);
+        lg.addColorStop(0, st0);
+        lg.addColorStop(1, st1);
         ctx.strokeStyle = lg;
         ctx.lineWidth = 1.6;
         ctx.lineCap = "round";
@@ -406,8 +456,8 @@ export default function Starfield() {
         ctx.stroke();
 
         const hg = ctx.createRadialGradient(nx, ny, 0, nx, ny, 14);
-        hg.addColorStop(0, `rgba(255,255,255,${fade})`);
-        hg.addColorStop(1, "rgba(255,255,255,0)");
+        hg.addColorStop(0, P.shootHead(fade));
+        hg.addColorStop(1, P.shootHead(0));
         ctx.fillStyle = hg;
         ctx.beginPath();
         ctx.arc(nx, ny, 14, 0, Math.PI * 2);
@@ -477,7 +527,7 @@ export default function Starfield() {
       canvas.removeEventListener("mouseenter", onEnter);
       canvas.removeEventListener("mouseleave", onLeave);
     };
-  }, []);
+  }, [theme]);
 
   return (
     <canvas

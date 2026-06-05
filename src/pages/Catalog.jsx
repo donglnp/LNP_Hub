@@ -2,14 +2,18 @@ import { Link } from "react-router-dom";
 import GameCard from "../components/GameCard";
 import LanguageSwitcher from "../components/LanguageSwitcher";
 import ThemeToggle from "../components/ThemeToggle";
+import Starfield from "../components/Starfield";
 import { useAuth } from "../lib/AuthContext";
+import { useTheme } from "../lib/ThemeContext";
 import { signOut } from "../lib/auth";
 import { useT } from "../lib/i18n";
 import { PROGRAM, programState, formatDate } from "../games/wellness-challenge/lib/data";
 
 export default function Catalog() {
   const { user, isAdmin } = useAuth();
+  const { theme } = useTheme();
   const { t } = useT();
+  const isDark = theme === "dark";
 
   const wcState = programState();
   const wellnessCard = {
@@ -101,8 +105,23 @@ export default function Catalog() {
   }
 
   return (
-    <div className="min-h-screen bg-arena-bg text-arena-text">
-      <header className="border-b border-arena-border bg-arena-bg/80 backdrop-blur sticky top-0 z-30">
+    <div className="relative min-h-screen bg-arena-bg text-arena-text">
+      <div
+        className={`fixed inset-0 z-0 ${isDark ? "bg-[#05080F]" : "bg-[#EAF0FB]"}`}
+        aria-hidden="true"
+      >
+        <Starfield />
+        {/* subtle vignette so foreground text stays readable */}
+        <div
+          className={`pointer-events-none absolute inset-0 ${
+            isDark
+              ? "bg-[radial-gradient(ellipse_at_center,transparent_30%,rgba(5,8,15,0.75)_100%)]"
+              : "bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(234,240,251,0.65)_100%)]"
+          }`}
+        />
+      </div>
+
+      <header className="relative z-30 border-b border-arena-border bg-arena-bg/80 backdrop-blur sticky top-0">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center gap-3">
           <Link to="/" className="shrink-0 flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-arena-blue shadow-[0_0_8px_#60A5FA]" />
@@ -147,7 +166,7 @@ export default function Catalog() {
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
+      <main className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
         <section className="mb-10">
           <p className="text-[10px] tracking-[0.4em] uppercase text-arena-blue">
             {t("common.system_online")}
