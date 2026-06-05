@@ -314,7 +314,28 @@ function Field({ label, children, error, onHelp }) {
   );
 }
 
+// Render a translated template like "Open {link} and sign in", substituting
+// each {placeholder} with the matching React node from `parts`.
+function fillNodes(template, parts) {
+  const out = [];
+  const re = /\{(\w+)\}/g;
+  let last = 0;
+  let m;
+  let i = 0;
+  while ((m = re.exec(template)) !== null) {
+    if (m.index > last) out.push(template.slice(last, m.index));
+    out.push(<span key={i++}>{parts[m[1]]}</span>);
+    last = m.index + m[0].length;
+  }
+  if (last < template.length) out.push(template.slice(last));
+  return out;
+}
+
 function UploadHelpModal({ onClose }) {
+  const { t } = useT();
+  const strong = (key) => (
+    <span className="text-arena-text">{t(key)}</span>
+  );
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4"
@@ -324,46 +345,88 @@ function UploadHelpModal({ onClose }) {
         className="w-full max-w-md rounded-lg border border-arena-border bg-arena-surface p-6"
         onClick={(e) => e.stopPropagation()}
       >
-        <h2 className="font-display text-xl font-semibold mb-3">
-          Hướng dẫn upload hình lên Google Drive
+        <h2 className="font-display text-xl font-semibold mb-4">
+          {t("wc.upload_help_title")}
         </h2>
+
+        <h3 className="font-display text-sm font-semibold text-arena-text mb-2">
+          {t("wc.upload_help_drive_heading")}
+        </h3>
         <ol className="text-sm text-arena-muted space-y-2 list-decimal list-inside">
           <li>
-            Mở{" "}
-            <a
-              href="https://drive.google.com"
-              target="_blank"
-              rel="noreferrer"
-              className="text-arena-amber hover:underline"
-            >
-              drive.google.com
-            </a>{" "}
-            và đăng nhập bằng tài khoản Google của bạn.
+            {fillNodes(t("wc.upload_help_step_open"), {
+              link: (
+                <a
+                  href="https://drive.google.com"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-arena-amber hover:underline"
+                >
+                  drive.google.com
+                </a>
+              ),
+            })}
           </li>
           <li>
-            Bấm <span className="text-arena-text">Mới → Tải tệp lên</span> và
-            chọn ảnh cần upload.
+            {fillNodes(t("wc.upload_help_step_name"), {
+              format: strong("wc.upload_help_step_name_format"),
+              ex1: <span className="text-arena-text">20260605_in</span>,
+              ex2: <span className="text-arena-text">20260606_out</span>,
+            })}
           </li>
           <li>
-            Sau khi tải xong, chuột phải vào ảnh →{" "}
-            <span className="text-arena-text">Chia sẻ</span>.
+            {fillNodes(t("wc.upload_help_step_upload"), {
+              action: strong("wc.upload_help_step_upload_action"),
+            })}
           </li>
           <li>
-            Trong mục <span className="text-arena-text">Quyền truy cập chung</span>,
-            đổi sang <span className="text-arena-text">Bất kỳ ai có đường liên kết</span>.
+            {fillNodes(t("wc.upload_help_step_share"), {
+              action: strong("wc.upload_help_step_share_action"),
+            })}
           </li>
           <li>
-            Bấm <span className="text-arena-text">Sao chép đường liên kết</span>{" "}
-            rồi dán vào ô nhập ở đây.
+            {fillNodes(t("wc.upload_help_step_access"), {
+              section: strong("wc.upload_help_step_access_section"),
+              value: strong("wc.upload_help_step_access_value"),
+            })}
+          </li>
+          <li>
+            {fillNodes(t("wc.upload_help_step_copy"), {
+              action: strong("wc.upload_help_step_copy_action"),
+            })}
           </li>
         </ol>
+
+        <h3 className="font-display text-sm font-semibold text-arena-text mt-5 mb-2">
+          {t("wc.upload_help_slack_heading")}
+        </h3>
+        <p className="text-sm text-arena-muted mb-2">
+          {t("wc.upload_help_slack_intro")}
+        </p>
+        <ol className="text-sm text-arena-muted space-y-2 list-decimal list-inside">
+          <li>
+            {fillNodes(t("wc.upload_help_slack_step_send"), {
+              format: strong("wc.upload_help_step_name_format"),
+              ex1: <span className="text-arena-text">20260605_in</span>,
+              ex2: <span className="text-arena-text">20260606_out</span>,
+            })}
+          </li>
+          <li>
+            {fillNodes(t("wc.upload_help_slack_step_copy"), {
+              action: strong("wc.upload_help_slack_step_copy_action"),
+              copy: strong("wc.upload_help_slack_step_copy_link"),
+            })}
+          </li>
+          <li>{t("wc.upload_help_slack_step_paste")}</li>
+        </ol>
+
         <div className="mt-5 flex justify-end">
           <button
             type="button"
             onClick={onClose}
             className="btn btn-primary"
           >
-            Đóng
+            {t("wc.upload_help_close")}
           </button>
         </div>
       </div>

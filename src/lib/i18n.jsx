@@ -635,6 +635,104 @@ const dict = {
     vi: "Đã điền sẵn theo buổi tập gần nhất — nhớ chỉnh lại số liệu cho hôm nay trước khi gửi.",
     ja: "前回の記録を自動入力しました。送信前に今日の数値に修正してください。",
   },
+  "wc.upload_help_title": {
+    en: "How to upload photos",
+    vi: "Hướng dẫn upload hình",
+    ja: "写真のアップロード手順",
+  },
+  "wc.upload_help_drive_heading": {
+    en: "Google Drive",
+    vi: "Google Drive",
+    ja: "Google ドライブ",
+  },
+  "wc.upload_help_slack_heading": { en: "Slack", vi: "Slack", ja: "Slack" },
+  "wc.upload_help_step_open": {
+    en: "Open {link} and sign in with your Google account.",
+    vi: "Mở {link} và đăng nhập bằng tài khoản Google của bạn.",
+    ja: "{link} を開き、Google アカウントでサインインします。",
+  },
+  "wc.upload_help_step_name": {
+    en: "Name the photo as {format} — for example {ex1} and {ex2}.",
+    vi: "Đặt tên ảnh theo định dạng {format} — ví dụ {ex1} và {ex2}.",
+    ja: "写真を {format} の形式で命名します — 例：{ex1} と {ex2}。",
+  },
+  "wc.upload_help_step_name_format": {
+    en: "yearmonthday_in / out",
+    vi: "nămthángngày_in / out",
+    ja: "年月日_in / out",
+  },
+  "wc.upload_help_step_upload": {
+    en: "Click {action} and choose the photo to upload.",
+    vi: "Bấm {action} và chọn ảnh cần upload.",
+    ja: "{action} をクリックしてアップロードする写真を選びます。",
+  },
+  "wc.upload_help_step_upload_action": {
+    en: "New → Upload file",
+    vi: "Mới → Tải tệp lên",
+    ja: "新規 → ファイルをアップロード",
+  },
+  "wc.upload_help_step_share": {
+    en: "After uploading, right-click the photo → {action}.",
+    vi: "Sau khi tải xong, chuột phải vào ảnh → {action}.",
+    ja: "アップロード後、写真を右クリック → {action}。",
+  },
+  "wc.upload_help_step_share_action": { en: "Share", vi: "Chia sẻ", ja: "共有" },
+  "wc.upload_help_step_access": {
+    en: "Under {section}, change it to {value}.",
+    vi: "Trong mục {section}, đổi sang {value}.",
+    ja: "{section} で {value} に変更します。",
+  },
+  "wc.upload_help_step_access_section": {
+    en: "General access",
+    vi: "Quyền truy cập chung",
+    ja: "一般的なアクセス",
+  },
+  "wc.upload_help_step_access_value": {
+    en: "Anyone with the link",
+    vi: "Bất kỳ ai có đường liên kết",
+    ja: "リンクを知っている全員",
+  },
+  "wc.upload_help_step_copy": {
+    en: "Click {action} and paste it into the field here.",
+    vi: "Bấm {action} rồi dán vào ô nhập ở đây.",
+    ja: "{action} をクリックし、ここの入力欄に貼り付けます。",
+  },
+  "wc.upload_help_step_copy_action": {
+    en: "Copy link",
+    vi: "Sao chép đường liên kết",
+    ja: "リンクをコピー",
+  },
+  "wc.upload_help_slack_intro": {
+    en: "Prefer Slack? Send the photo there and paste its link instead.",
+    vi: "Thích dùng Slack hơn? Gửi ảnh lên đó rồi dán liên kết vào đây.",
+    ja: "Slack を使う場合は、そこに写真を送ってリンクを貼り付けてください。",
+  },
+  "wc.upload_help_slack_step_send": {
+    en: "Send the photo to the program Slack channel, named {format} (e.g. {ex1}, {ex2}).",
+    vi: "Gửi ảnh vào kênh Slack của chương trình, đặt tên theo định dạng {format} (ví dụ {ex1}, {ex2}).",
+    ja: "プログラムの Slack チャンネルに写真を送信し、{format} の形式で命名します（例：{ex1}、{ex2}）。",
+  },
+  "wc.upload_help_slack_step_copy": {
+    en: "Hover the photo → {action} → {copy}.",
+    vi: "Di chuột vào ảnh → {action} → {copy}.",
+    ja: "写真にカーソルを合わせ → {action} → {copy}。",
+  },
+  "wc.upload_help_slack_step_copy_action": {
+    en: "More actions",
+    vi: "Tuỳ chọn khác",
+    ja: "その他の操作",
+  },
+  "wc.upload_help_slack_step_copy_link": {
+    en: "Copy link",
+    vi: "Sao chép liên kết",
+    ja: "リンクをコピー",
+  },
+  "wc.upload_help_slack_step_paste": {
+    en: "Paste the link into the field here.",
+    vi: "Dán liên kết vào ô nhập ở đây.",
+    ja: "そのリンクをここの入力欄に貼り付けます。",
+  },
+  "wc.upload_help_close": { en: "Close", vi: "Đóng", ja: "閉じる" },
   "wc.history_btn_delete": { en: "Delete", vi: "Xoá", ja: "削除" },
   "wc.history_confirm_delete": {
     en: "Delete this pending entry?",
