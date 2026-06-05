@@ -1499,6 +1499,131 @@ const dict = {
     vi: "Thấy ngày nào đông là vào ngay để team đủ vui!",
     ja: "盛り上がる日があれば、ぜひ参加して仲間を増やそう！",
   },
+
+  // ---------- World Cup admin ----------
+  "wcAdmin.loading": { en: "Loading…", vi: "Đang tải…", ja: "読み込み中…" },
+  "wcAdmin.tab_results": { en: "Results", vi: "Kết quả", ja: "結果" },
+  "wcAdmin.tab_predictions": { en: "Predictions", vi: "Dự đoán", ja: "予想" },
+  "wcAdmin.tab_players": { en: "Players", vi: "Người chơi", ja: "プレイヤー" },
+  "wcAdmin.save": { en: "Save", vi: "Lưu", ja: "保存" },
+  "wcAdmin.cancel": { en: "Cancel", vi: "Huỷ", ja: "キャンセル" },
+  "wcAdmin.edit": { en: "Edit", vi: "Sửa", ja: "編集" },
+  "wcAdmin.delete": { en: "Delete", vi: "Xoá", ja: "削除" },
+  "wcAdmin.search_user": {
+    en: "Search name / email…",
+    vi: "Tìm theo tên / email…",
+    ja: "名前・メールで検索…",
+  },
+
+  // Results tab
+  "wcAdmin.results_title": { en: "Results", vi: "Kết quả", ja: "結果" },
+  "wcAdmin.only_missing": {
+    en: "Only matches without a result",
+    vi: "Chỉ trận chưa có KQ",
+    ja: "結果未登録の試合のみ",
+  },
+  "wcAdmin.search_match": {
+    en: "Search team / group…",
+    vi: "Tìm đội / bảng…",
+    ja: "チーム・グループで検索…",
+  },
+  "wcAdmin.sync_api": { en: "↻ Sync from API", vi: "↻ Đồng bộ từ API", ja: "↻ APIから同期" },
+  "wcAdmin.sync_hint": {
+    en: "Pull results for finished matches from the API",
+    vi: "Lấy kết quả các trận đã đá xong từ API",
+    ja: "終了した試合の結果をAPIから取得",
+  },
+  "wcAdmin.results_api_note": {
+    en: "Results come from the API only — press “Sync from API” after matches finish.",
+    vi: "Kết quả chỉ lấy từ API — bấm “Đồng bộ từ API” sau khi trận kết thúc.",
+    ja: "結果はAPIからのみ取得します。試合終了後に「APIから同期」を押してください。",
+  },
+  "wcAdmin.no_matches": { en: "No matches.", vi: "Không có trận nào.", ja: "試合がありません。" },
+  "wcAdmin.group": { en: "Group {g}", vi: "Bảng {g}", ja: "グループ {g}" },
+  "wcAdmin.other": { en: "Other", vi: "Khác", ja: "その他" },
+  "wcAdmin.vs": { en: "vs", vi: "gặp", ja: "対" },
+  "wcAdmin.result_chip": {
+    en: "Result {h}–{a}",
+    vi: "Kết quả {h}–{a}",
+    ja: "結果 {h}–{a}",
+  },
+  "wcAdmin.pred_count": {
+    en: "{n} predictions",
+    vi: "{n} dự đoán",
+    ja: "{n}件の予想",
+  },
+  "wcAdmin.saved": { en: "saved", vi: "đã lưu", ja: "保存済み" },
+  "wcAdmin.status_upcoming": { en: "Upcoming", vi: "Sắp đá", ja: "未開始" },
+  "wcAdmin.status_live": { en: "Live", vi: "Đang đá", ja: "進行中" },
+  "wcAdmin.status_finished": { en: "Finished", vi: "Đã đá", ja: "終了" },
+  "wcAdmin.confirm_delete_result": {
+    en: "Delete this match result?",
+    vi: "Xoá kết quả trận này?",
+    ja: "この試合結果を削除しますか？",
+  },
+  "wcAdmin.toast_result_saved": { en: "Result saved", vi: "Đã lưu kết quả", ja: "結果を保存しました" },
+  "wcAdmin.toast_result_deleted": { en: "Result deleted", vi: "Đã xoá kết quả", ja: "結果を削除しました" },
+  "wcAdmin.toast_synced": { en: "Synced {n} matches", vi: "Đã đồng bộ {n} trận", ja: "{n}試合を同期しました" },
+  "wcAdmin.toast_sync_none": {
+    en: "No new matches to sync",
+    vi: "Không có trận mới để đồng bộ",
+    ja: "同期する新しい試合はありません",
+  },
+
+  // Predictions tab
+  "wcAdmin.predictions_title": { en: "Predictions", vi: "Dự đoán", ja: "予想" },
+  "wcAdmin.all_matches": { en: "All matches", vi: "Tất cả trận", ja: "すべての試合" },
+  "wcAdmin.lock_all": { en: "🔒 Lock all", vi: "🔒 Khoá hết", ja: "🔒 全てロック" },
+  "wcAdmin.unlock_all": { en: "🔓 Unlock all", vi: "🔓 Mở hết", ja: "🔓 全て解除" },
+  "wcAdmin.confirm_lock_all": {
+    en: "Lock every prediction for this match?",
+    vi: "Khoá tất cả dự đoán trận này?",
+    ja: "この試合の予想を全てロックしますか？",
+  },
+  "wcAdmin.confirm_unlock_all": {
+    en: "Unlock every prediction for this match?",
+    vi: "Mở khoá tất cả dự đoán trận này?",
+    ja: "この試合の予想を全て解除しますか？",
+  },
+  "wcAdmin.toast_locked": { en: "Locked", vi: "Đã khoá", ja: "ロックしました" },
+  "wcAdmin.toast_unlocked": { en: "Unlocked", vi: "Đã mở khoá", ja: "解除しました" },
+  "wcAdmin.no_predictions": {
+    en: "No predictions yet.",
+    vi: "Chưa có dự đoán nào.",
+    ja: "まだ予想がありません。",
+  },
+  "wcAdmin.col_player": { en: "Player", vi: "Người chơi", ja: "プレイヤー" },
+  "wcAdmin.col_match": { en: "Match", vi: "Trận", ja: "試合" },
+  "wcAdmin.col_prediction": { en: "Prediction", vi: "Dự đoán", ja: "予想" },
+  "wcAdmin.col_locked": { en: "Locked", vi: "Khoá", ja: "ロック" },
+  "wcAdmin.locked_yes": { en: "Locked", vi: "Đã khoá", ja: "ロック済み" },
+  "wcAdmin.locked_no": { en: "Unlocked", vi: "Chưa khoá", ja: "未ロック" },
+  "wcAdmin.confirm_delete_prediction": {
+    en: "Delete this prediction?",
+    vi: "Xoá dự đoán này?",
+    ja: "この予想を削除しますか？",
+  },
+  "wcAdmin.toast_prediction_saved": {
+    en: "Prediction updated",
+    vi: "Đã cập nhật dự đoán",
+    ja: "予想を更新しました",
+  },
+  "wcAdmin.toast_prediction_deleted": {
+    en: "Prediction deleted",
+    vi: "Đã xoá dự đoán",
+    ja: "予想を削除しました",
+  },
+
+  // Players tab
+  "wcAdmin.players_title": { en: "Players", vi: "Người chơi", ja: "プレイヤー" },
+  "wcAdmin.col_name": { en: "Name", vi: "Tên", ja: "名前" },
+  "wcAdmin.col_email": { en: "Email", vi: "Email", ja: "メール" },
+  "wcAdmin.col_prediction_count": {
+    en: "Predictions",
+    vi: "Số dự đoán",
+    ja: "予想数",
+  },
+  "wcAdmin.col_admin": { en: "Admin", vi: "Admin", ja: "管理者" },
 };
 
 export function localeOf(lang) {

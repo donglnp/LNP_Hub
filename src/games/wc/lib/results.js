@@ -72,6 +72,51 @@ export async function loadResults() {
   return cache;
 }
 
+// Admin: write a match result (upsert). Requires the admin RLS policy.
+export async function saveResult(matchId, home, away) {
+  const next = {
+    home: Number(home),
+    away: Number(away),
+    finishedAt: new Date().toISOString(),
+  };
+  cache.set(matchId, next);
+  emit();
+
+  if (!isSupabaseReady) return next;
+
+  const { error } = await supabase.from("match_results").upsert(
+    {
+      match_id: matchId,
+      home_score: next.home,
+      away_score: next.away,
+      finished_at: next.finishedAt,
+    },
+    { onConflict: "match_id" }
+  );
+  if (error) {
+    console.error("[results] save failed:", error.message);
+    throw error;
+  }
+  return next;
+}
+
+// Admin: remove a match result.
+export async function deleteResult(matchId) {
+  cache.delete(matchId);
+  emit();
+
+  if (!isSupabaseReady) return;
+
+  const { error } = await supabase
+    .from("match_results")
+    .delete()
+    .eq("match_id", matchId);
+  if (error) {
+    console.error("[results] delete failed:", error.message);
+    throw error;
+  }
+}
+
 export function resetResults() {
   cache = new Map();
   loaded = false;

@@ -12,6 +12,11 @@ create table if not exists public.profiles (
   created_at timestamptz not null default now()
 );
 
+-- is_admin gates the admin panel. The hub/wellness schema also adds this column;
+-- declared here too so a standalone WC Supabase project still has it.
+alter table public.profiles
+  add column if not exists is_admin boolean not null default false;
+
 alter table public.profiles enable row level security;
 
 drop policy if exists "read all profiles" on public.profiles;
@@ -86,6 +91,18 @@ drop policy if exists "delete own prediction" on public.predictions;
 create policy "delete own prediction"
   on public.predictions for delete using (auth.uid() = user_id);
 
+-- Admins can edit / force-lock / delete any prediction (dispute handling).
+drop policy if exists "admin update predictions" on public.predictions;
+create policy "admin update predictions"
+  on public.predictions for update
+  using (exists (select 1 from public.profiles where id = auth.uid() and is_admin = true))
+  with check (exists (select 1 from public.profiles where id = auth.uid() and is_admin = true));
+
+drop policy if exists "admin delete predictions" on public.predictions;
+create policy "admin delete predictions"
+  on public.predictions for delete
+  using (exists (select 1 from public.profiles where id = auth.uid() and is_admin = true));
+
 -- ---------- match results (admin-populated) ----------
 -- Used by the scoring view. Until you populate it, points are 0 and the
 -- leaderboard ranks by # locked predictions.
@@ -101,6 +118,23 @@ alter table public.match_results enable row level security;
 drop policy if exists "read all results" on public.match_results;
 create policy "read all results"
   on public.match_results for select using (true);
+
+-- Only admins write results (they drive the leaderboard scoring).
+drop policy if exists "admin insert results" on public.match_results;
+create policy "admin insert results"
+  on public.match_results for insert
+  with check (exists (select 1 from public.profiles where id = auth.uid() and is_admin = true));
+
+drop policy if exists "admin update results" on public.match_results;
+create policy "admin update results"
+  on public.match_results for update
+  using (exists (select 1 from public.profiles where id = auth.uid() and is_admin = true))
+  with check (exists (select 1 from public.profiles where id = auth.uid() and is_admin = true));
+
+drop policy if exists "admin delete results" on public.match_results;
+create policy "admin delete results"
+  on public.match_results for delete
+  using (exists (select 1 from public.profiles where id = auth.uid() and is_admin = true));
 
 -- ---------- leaderboard view ----------
 -- Scoring: 15 pts exact score, 5 pts correct outcome, 0 otherwise.
@@ -145,5 +179,23 @@ order by total_points desc, exact_scores desc, locked_count desc, pr.full_name;
 grant select on public.leaderboard to anon, authenticated;
 
 -- ---------- realtime ----------
-alter publication supabase_realtime add table public.predictions;
-alter publication supabase_realtime add table public.match_results;
+-- Idempotent: only add a table if it isn't already in the publication
+-- (re-adding raises "already member of publication").
+do $$
+begin
+  if not exists (
+    select 1 from pg_publication_tables
+    where pubname = 'supabase_realtime'
+      and schemaname = 'public' and tablename = 'predictions'
+  ) then
+    alter publication supabase_realtime add table public.predictions;
+  end if;
+
+  if not exists (
+    select 1 from pg_publication_tables
+    where pubname = 'supabase_realtime'
+      and schemaname = 'public' and tablename = 'match_results'
+  ) then
+    alter publication supabase_realtime add table public.match_results;
+  end if;
+end $$;
