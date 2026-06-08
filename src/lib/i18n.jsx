@@ -734,6 +734,12 @@ const dict = {
   },
   "wc.upload_help_close": { en: "Close", vi: "Đóng", ja: "閉じる" },
   "wc.history_btn_delete": { en: "Delete", vi: "Xoá", ja: "削除" },
+  "wc.history_btn_edit": { en: "Edit", vi: "Sửa", ja: "編集" },
+  "wc.history_edit_title": {
+    en: "Edit pending entry",
+    vi: "Sửa buổi tập đang chờ duyệt",
+    ja: "保留中の記録を編集",
+  },
   "wc.history_confirm_delete": {
     en: "Delete this pending entry?",
     vi: "Xoá buổi tập đang chờ duyệt này?",
@@ -822,14 +828,19 @@ const dict = {
     ja: "管理者に連絡してプログラムに追加してもらってください。",
   },
   "wc.empty_need_kpi_title": {
-    en: "KPI setup required",
-    vi: "Cần thiết lập KPI",
-    ja: "KPI の設定が必要です",
+    en: "Choose your gender",
+    vi: "Chọn giới tính của bạn",
+    ja: "性別を選択してください",
   },
   "wc.empty_need_kpi_sub": {
-    en: "Admin hasn't set your gender yet. Weekly KPI depends on gender — ask admin to activate it.",
-    vi: "Admin chưa cập nhật giới tính cho bạn. KPI hàng tuần phụ thuộc vào giới — liên hệ admin để được kích hoạt.",
-    ja: "管理者があなたの性別を未設定です。週間KPIは性別により決まります — 管理者に有効化を依頼してください。",
+    en: "Weekly KPI depends on gender. Pick yours to get started — an admin can adjust it later if needed.",
+    vi: "KPI hàng tuần phụ thuộc vào giới tính. Chọn để bắt đầu — admin có thể điều chỉnh lại sau nếu cần.",
+    ja: "週間KPIは性別によって決まります。選択して始めましょう — 必要なら管理者が後で変更できます。",
+  },
+  "wc.gender_set_error": {
+    en: "Couldn't save. Please try again.",
+    vi: "Không lưu được. Vui lòng thử lại.",
+    ja: "保存できませんでした。もう一度お試しください。",
   },
   "wc.empty_upcoming_title": {
     en: "Program starts in {days} days",

@@ -35,6 +35,29 @@ create policy "admin update any profile"
   using (exists (select 1 from public.profiles p where p.id = auth.uid() and p.is_admin = true))
   with check (exists (select 1 from public.profiles p where p.id = auth.uid() and p.is_admin = true));
 
+-- ---------- self-service gender ----------
+-- Users set their OWN gender (set-once) without us opening a broad UPDATE policy
+-- on profiles (which would let them flip is_admin / joined_wellness). This
+-- SECURITY DEFINER fn touches only the gender column for the caller, and only
+-- while it is still null — admins can still override via "admin update any profile".
+create or replace function public.set_my_gender(g text)
+returns void
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  if g not in ('male', 'female') then
+    raise exception 'invalid gender: %', g;
+  end if;
+  update public.profiles
+    set gender = g
+    where id = auth.uid() and gender is null;
+end $$;
+
+revoke all on function public.set_my_gender(text) from public;
+grant execute on function public.set_my_gender(text) to authenticated;
+
 -- ---------- wellness_entries ----------
 create table if not exists public.wellness_entries (
   id              uuid primary key default gen_random_uuid(),

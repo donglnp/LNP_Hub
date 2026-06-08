@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Ring from "../components/Ring";
 import { useAuth } from "../../../lib/AuthContext";
 import { useT, localeOf, formatNum } from "../../../lib/i18n";
-import { fetchMyEntries, subscribeEntries } from "../lib/wellness";
+import { fetchMyEntries, setMyGender, subscribeEntries } from "../lib/wellness";
 import {
   PROGRAM,
   PRIZES,
@@ -25,7 +25,7 @@ function prizeAmountKey(id) {
 }
 
 export default function Dashboard() {
-  const { user, profile } = useAuth();
+  const { user, profile, refreshProfile } = useAuth();
   const { t, lang } = useT();
   const [entries, setEntries] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -82,6 +82,7 @@ export default function Dashboard() {
         icon="⚙️"
         title={t("wc.empty_need_kpi_title")}
         sub={t("wc.empty_need_kpi_sub")}
+        action={<GenderPicker onSaved={refreshProfile} />}
       />
     );
   }
@@ -343,6 +344,52 @@ function StatCard({ label, value, unit, sub, tone = "muted" }) {
         )}
       </p>
       <p className="text-[11px] text-arena-muted mt-1">{sub}</p>
+    </div>
+  );
+}
+
+function GenderPicker({ onSaved }) {
+  const { t } = useT();
+  const [saving, setSaving] = useState(null);
+  const [error, setError] = useState(false);
+
+  async function pick(g) {
+    if (saving) return;
+    setError(false);
+    setSaving(g);
+    try {
+      await setMyGender(g);
+      await onSaved?.();
+    } catch (e) {
+      console.warn("[wellness] setMyGender", e);
+      setError(true);
+      setSaving(null);
+    }
+  }
+
+  const opts = [
+    { value: "male", label: t("wc.gender_male") },
+    { value: "female", label: t("wc.gender_female") },
+  ];
+
+  return (
+    <div>
+      <div className="flex justify-center gap-3">
+        {opts.map((o) => (
+          <button
+            key={o.value}
+            type="button"
+            disabled={Boolean(saving)}
+            onClick={() => pick(o.value)}
+            className="min-w-[7rem] rounded-md border border-arena-border bg-arena-bg px-5 py-3 text-sm font-semibold tracking-[0.15em] uppercase hover:border-arena-amber/60 hover:text-arena-amber disabled:opacity-50"
+          >
+            {saving === o.value ? "…" : o.label}
+          </button>
+        ))}
+      </div>
+      {error && (
+        <p className="mt-3 text-xs text-arena-red">{t("wc.gender_set_error")}</p>
+      )}
     </div>
   );
 }

@@ -209,6 +209,17 @@ export async function deleteEntry(id) {
   if (error) throw error;
 }
 
+// User self-sets their own gender (set-once) via SECURITY DEFINER RPC, so we
+// don't need a broad UPDATE policy on profiles. Admin can still override later.
+export async function setMyGender(gender) {
+  if (!supabaseHub) throw new Error("Supabase not configured");
+  if (gender !== "male" && gender !== "female") {
+    throw new Error("Invalid gender");
+  }
+  const { error } = await supabaseHub.rpc("set_my_gender", { g: gender });
+  if (error) throw error;
+}
+
 export async function updateProfileMeta(id, patch) {
   if (!supabaseHub) throw new Error("Supabase not configured");
   const { data, error } = await supabaseHub
