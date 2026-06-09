@@ -23,7 +23,7 @@ export default function Leaderboard() {
   const [profiles, setProfiles] = useState([]);
   const [entries, setEntries] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [gender, setGender] = useState("all");
+  const [gender, setGender] = useState("female");
   const [selectedUser, setSelectedUser] = useState(null);
   const monthInfo = currentMonthInfo();
   const [month, setMonth] = useState(
@@ -31,9 +31,9 @@ export default function Leaderboard() {
   );
 
   const GENDER_TABS = [
-    { value: "all", label: t("wc.lb_gender_all") },
-    { value: "male", label: t("wc.gender_male") },
     { value: "female", label: t("wc.gender_female") },
+    { value: "male", label: t("wc.gender_male") },
+    { value: "all", label: t("wc.lb_gender_all") },
   ];
 
   const MONTH_TABS = [
