@@ -193,6 +193,14 @@ create policy "user delete own pending"
   on public.wellness_entries for delete to authenticated
   using (user_id = auth.uid() and status = 'pending');
 
+-- ---------- track who created each record ----------
+-- created_by stores the auth.uid() of whoever inserts the row: the admin when
+-- they log an entry on someone's behalf, or the user themselves on self-submit.
+-- Setting it as a column DEFAULT means every insert path records it with no
+-- app code change. Existing rows stay NULL (the data was never captured).
+alter table public.wellness_entries
+  alter column created_by set default auth.uid();
+
 -- ---------- bootstrap first admin ----------
 -- AFTER you log in once via Google, find your auth.users id and run:
 --   update public.profiles set is_admin = true where email = 'your@lnp-technologies.com';
