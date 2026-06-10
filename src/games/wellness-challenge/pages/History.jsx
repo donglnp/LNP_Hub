@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import { useAuth } from "../../../lib/AuthContext";
 import { useT, localeOf, formatNum } from "../../../lib/i18n";
 import {
@@ -72,6 +73,12 @@ export default function History() {
             {t("wc.history_title")}
           </h1>
         </div>
+        <Link
+          to="../log"
+          className="rounded-md bg-arena-amber text-arena-bg px-4 py-2 text-sm font-semibold tracking-wide uppercase hover:brightness-110"
+        >
+          {t("wc.history_btn_log")}
+        </Link>
       </header>
 
       <div className="flex flex-wrap gap-2">

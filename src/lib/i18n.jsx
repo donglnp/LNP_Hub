@@ -735,6 +735,11 @@ const dict = {
   "wc.upload_help_close": { en: "Close", vi: "Đóng", ja: "閉じる" },
   "wc.history_btn_delete": { en: "Delete", vi: "Xoá", ja: "削除" },
   "wc.history_btn_edit": { en: "Edit", vi: "Sửa", ja: "編集" },
+  "wc.history_btn_log": {
+    en: "Log a workout",
+    vi: "Ghi buổi tập",
+    ja: "ワークアウトを記録",
+  },
   "wc.history_edit_title": {
     en: "Edit pending entry",
     vi: "Sửa buổi tập đang chờ duyệt",
