@@ -20,6 +20,7 @@ export default function Layout({ user }) {
     { to: "/wc", label: t("nav.dashboard"), end: true },
     { to: "/wc/matches", label: t("nav.matches") },
     { to: "/wc/leaderboard", label: t("nav.leaderboard") },
+    { to: "/wc/scorers", label: t("nav.scorers") },
   ];
 
   return (

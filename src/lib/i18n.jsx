@@ -151,6 +151,11 @@ const dict = {
     vi: "Bảng xếp hạng",
     ja: "ランキング",
   },
+  "nav.scorers": {
+    en: "Top Scorers",
+    vi: "Vua phá lưới",
+    ja: "得点ランキング",
+  },
 
   // ---------- Login ----------
   "login.headline_1": { en: "Welcome to", vi: "Chào mừng đến", ja: "ようこそ" },
@@ -315,6 +320,42 @@ const dict = {
     vi: "Chưa có dự đoán nào. Hãy là người đầu tiên!",
     ja: "予想はまだありません。最初の参加者になろう！",
   },
+
+  // ---------- Top scorers ----------
+  "sc.title": {
+    en: "Top Scorers",
+    vi: "Bảng xếp hạng ghi bàn",
+    ja: "得点ランキング",
+  },
+  "sc.subtitle": {
+    en: "Tournament golden boot race, updated after every match.",
+    vi: "Cuộc đua Chiếc giày vàng, cập nhật sau mỗi trận.",
+    ja: "得点王争い。試合ごとに更新されます。",
+  },
+  "sc.col_rank": { en: "Rank", vi: "Hạng", ja: "順位" },
+  "sc.col_player": { en: "Player", vi: "Cầu thủ", ja: "選手" },
+  "sc.col_team": { en: "Team", vi: "Đội", ja: "チーム" },
+  "sc.col_goals": { en: "Goals", vi: "Bàn thắng", ja: "得点" },
+  "sc.col_assists": { en: "Assists", vi: "Kiến tạo", ja: "アシスト" },
+  "sc.col_played": { en: "Played", vi: "Số trận", ja: "試合数" },
+  "sc.pen": { en: "{n} pen", vi: "{n} pen", ja: "PK{n}" },
+  "sc.empty": {
+    en: "No goals scored yet.",
+    vi: "Chưa có bàn thắng nào.",
+    ja: "まだ得点はありません。",
+  },
+  "sc.source": {
+    en: "Source: {source} · Matchday {md}. Scorer stats may lag a few hours behind live results.",
+    vi: "Nguồn: {source} · Vòng {md}. Thống kê ghi bàn có thể trễ vài giờ so với kết quả trực tiếp.",
+    ja: "ソース: {source}・第{md}節。得点記録は速報結果より数時間遅れる場合があります。",
+  },
+  "sc.source_mock": {
+    en: "Showing sample data — set a football-data.org token for live stats.",
+    vi: "Đang hiển thị dữ liệu mẫu — cấu hình token football-data.org để có số liệu thật.",
+    ja: "サンプルデータを表示中 — ライブ統計には football-data.org のトークンが必要です。",
+  },
+  "sc.refresh": { en: "Refresh", vi: "Làm mới", ja: "更新" },
+  "sc.refreshing": { en: "Refreshing…", vi: "Đang làm mới…", ja: "更新中…" },
 
   // ---------- Profile ----------
   "profile.rank": { en: "Rank", vi: "Hạng", ja: "順位" },
