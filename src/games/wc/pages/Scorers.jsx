@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { loadScorers, loadScorerPhoto } from "../lib/scorers";
+import { loadScorers, loadScorerPhoto, loadScorerProfile } from "../lib/scorers";
 import { useT } from "../../../lib/i18n";
 import { LeaderboardSkeleton } from "../../../components/Skeleton";
 
@@ -13,6 +13,7 @@ export default function Scorers() {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [meta, setMeta] = useState({ source: null, matchday: null });
+  const [selected, setSelected] = useState(null);
   const loadRef = useRef(null);
 
   useEffect(() => {
@@ -110,10 +111,17 @@ export default function Scorers() {
                     )}
                   </Td>
                   <Td className="font-medium">
-                    <span className="inline-flex items-center gap-2.5">
-                      <PlayerAvatar photo={row.photo} name={row.name} />
+                    <button
+                      type="button"
+                      onClick={() => setSelected({ ...row, rank })}
+                      className="inline-flex items-center gap-2.5 text-left hover:text-arena-green transition group"
+                      title={t("sc.col_player")}
+                    >
+                      <span className="ring-2 ring-transparent group-hover:ring-arena-green/50 rounded-full transition">
+                        <PlayerAvatar photo={row.photo} name={row.name} />
+                      </span>
                       {row.name}
-                    </span>
+                    </button>
                   </Td>
                   <Td>
                     <span className="inline-flex items-center gap-2">
@@ -141,18 +149,170 @@ export default function Scorers() {
           </tbody>
         </table>
       </div>
+
+      {selected && (
+        <PlayerSheet row={selected} onClose={() => setSelected(null)} />
+      )}
     </div>
   );
 }
 
-function PlayerAvatar({ photo, name }) {
-  const initials = (name || "?")
+function PlayerSheet({ row, onClose }) {
+  const { t } = useT();
+  const [profile, setProfile] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let alive = true;
+    setLoading(true);
+    loadScorerProfile(row.name)
+      .then((p) => alive && setProfile(p))
+      .finally(() => alive && setLoading(false));
+    return () => {
+      alive = false;
+    };
+  }, [row.name]);
+
+  useEffect(() => {
+    function onKey(e) {
+      if (e.key === "Escape") onClose?.();
+    }
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [onClose]);
+
+  const photo = profile?.photo || row.photo;
+
+  return (
+    <div
+      className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm overflow-y-auto"
+      onClick={onClose}
+    >
+      <div className="min-h-full grid place-items-center p-4">
+        <div
+          onClick={(e) => e.stopPropagation()}
+          className="w-full max-w-md rounded-xl border border-arena-border bg-arena-surface shadow-card"
+        >
+          <header className="flex items-center gap-4 p-6 border-b border-arena-border">
+            <span className="w-16 h-16 shrink-0 rounded-full bg-arena-card border border-arena-border grid place-items-center overflow-hidden text-sm font-semibold text-arena-muted">
+              {photo ? (
+                <img
+                  src={photo}
+                  alt={row.name}
+                  className="w-full h-full object-cover"
+                  referrerPolicy="no-referrer"
+                  onError={(e) => {
+                    e.currentTarget.style.display = "none";
+                  }}
+                />
+              ) : (
+                initialsOf(row.name)
+              )}
+            </span>
+            <div className="flex-1 min-w-0">
+              <h2 className="font-display text-xl font-semibold truncate">
+                {row.name}
+              </h2>
+              <p className="text-xs text-arena-muted inline-flex items-center gap-2 mt-0.5">
+                <TeamFlag flag={row.teamFlag} name={row.teamName} />
+                {row.teamName}
+              </p>
+            </div>
+            <button
+              onClick={onClose}
+              className="w-8 h-8 grid place-items-center rounded-md border border-arena-border text-arena-muted hover:text-arena-text hover:border-arena-green/40"
+              aria-label="Close"
+            >
+              ✕
+            </button>
+          </header>
+
+          <div className="p-6 space-y-5">
+            <div className="grid grid-cols-3 gap-3">
+              <BigStat label={t("sc.col_goals")} value={row.goals} />
+              <BigStat label={t("sc.col_assists")} value={row.assists} />
+              <BigStat label={t("sc.col_played")} value={row.played} />
+            </div>
+
+            <dl className="text-sm divide-y divide-arena-border/60">
+              <DefRow label={t("sc.stat_rank")} value={`#${row.rank}`} />
+              {row.penalties > 0 && (
+                <DefRow
+                  label={t("sc.col_goals")}
+                  value={t("sc.pen", { n: row.penalties })}
+                />
+              )}
+              {loading ? (
+                <DefRow label="…" value="…" />
+              ) : (
+                <>
+                  {profile?.position && (
+                    <DefRow
+                      label={t("sc.stat_position")}
+                      value={profile.position}
+                    />
+                  )}
+                  {profile?.nationality && (
+                    <DefRow
+                      label={t("sc.stat_nationality")}
+                      value={profile.nationality}
+                    />
+                  )}
+                  {profile?.born && (
+                    <DefRow label={t("sc.stat_born")} value={profile.born} />
+                  )}
+                  {profile?.height && (
+                    <DefRow label={t("sc.stat_height")} value={profile.height} />
+                  )}
+                  {profile?.club && (
+                    <DefRow label={t("sc.stat_club")} value={profile.club} />
+                  )}
+                </>
+              )}
+            </dl>
+
+            {!loading && !profile && (
+              <p className="text-xs text-arena-muted">{t("sc.profile_empty")}</p>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function initialsOf(name) {
+  return (name || "?")
     .split(" ")
     .map((s) => s[0])
     .filter(Boolean)
     .slice(0, 2)
     .join("")
     .toUpperCase();
+}
+
+function BigStat({ label, value }) {
+  return (
+    <div className="rounded-lg border border-arena-border bg-arena-card p-3 text-center">
+      <div className="font-mono text-2xl font-semibold">{value}</div>
+      <div className="text-[10px] tracking-[0.2em] uppercase text-arena-muted mt-1">
+        {label}
+      </div>
+    </div>
+  );
+}
+
+function DefRow({ label, value }) {
+  return (
+    <div className="flex items-center justify-between py-2 gap-4">
+      <dt className="text-arena-muted">{label}</dt>
+      <dd className="font-medium text-right">{value}</dd>
+    </div>
+  );
+}
+
+function PlayerAvatar({ photo, name }) {
+  const initials = initialsOf(name);
   return (
     <span className="w-7 h-7 shrink-0 rounded-full bg-arena-card border border-arena-border grid place-items-center overflow-hidden text-[10px] font-semibold text-arena-muted">
       {photo ? (

@@ -356,6 +356,17 @@ const dict = {
   },
   "sc.refresh": { en: "Refresh", vi: "Làm mới", ja: "更新" },
   "sc.refreshing": { en: "Refreshing…", vi: "Đang làm mới…", ja: "更新中…" },
+  "sc.stat_rank": { en: "Rank", vi: "Hạng", ja: "順位" },
+  "sc.stat_position": { en: "Position", vi: "Vị trí", ja: "ポジション" },
+  "sc.stat_nationality": { en: "Nationality", vi: "Quốc tịch", ja: "国籍" },
+  "sc.stat_born": { en: "Born", vi: "Ngày sinh", ja: "生年月日" },
+  "sc.stat_height": { en: "Height", vi: "Chiều cao", ja: "身長" },
+  "sc.stat_club": { en: "Club", vi: "CLB", ja: "クラブ" },
+  "sc.profile_empty": {
+    en: "No extra profile info available for this player.",
+    vi: "Không có thêm thông tin hồ sơ cho cầu thủ này.",
+    ja: "この選手の追加プロフィール情報はありません。",
+  },
 
   // ---------- Profile ----------
   "profile.rank": { en: "Rank", vi: "Hạng", ja: "順位" },
@@ -447,6 +458,16 @@ const dict = {
   // ---------- Matches view toggle + bracket ----------
   "matches.view_list": { en: "List", vi: "Danh sách", ja: "リスト" },
   "matches.view_bracket": { en: "Bracket", vi: "Sơ đồ", ja: "トーナメント表" },
+  "matches.hide_played": {
+    en: "Hide played",
+    vi: "Ẩn trận đã đấu",
+    ja: "終了試合を隠す",
+  },
+  "matches.show_played": {
+    en: "Show played",
+    vi: "Hiện trận đã đấu",
+    ja: "終了試合を表示",
+  },
   "bracket.empty": {
     en: "Knockout bracket will appear here once the group stage concludes.",
     vi: "Sơ đồ vòng loại trực tiếp sẽ hiện khi vòng bảng kết thúc.",

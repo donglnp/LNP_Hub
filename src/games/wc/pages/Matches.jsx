@@ -20,6 +20,7 @@ export default function Matches({ user }) {
   const { data, loading } = useWorldCup();
   const [tab, setTab] = useState("All");
   const [view, setView] = useState("list"); // "list" | "bracket"
+  const [hidePlayed, setHidePlayed] = useState(true);
   const [openTeam, setOpenTeam] = useState(null);
   const [, force] = useState(0);
 
@@ -46,12 +47,13 @@ export default function Matches({ user }) {
   const filtered = useMemo(() => {
     if (!data) return [];
     return matches.filter((m) => {
+      if (hidePlayed && isMatchClosed(m, getResult(m.id))) return false;
       if (tab === "All") return true;
       if (tab === "Knockouts")
         return !m.group || m.group === "—" || /R\d|FINAL|SEMI|QUARTER/i.test(m.group);
       return m.group === tab;
     });
-  }, [data, matches, tab]);
+  }, [data, matches, tab, hidePlayed]);
 
   const groupedByTime = useMemo(() => {
     if (!data) return [];
@@ -106,6 +108,33 @@ export default function Matches({ user }) {
           </span>
         </div>
       </div>
+
+      {view === "list" && (
+        <div className="mt-4 flex justify-center">
+          <div className="inline-flex rounded-md border border-arena-border overflow-hidden">
+            <button
+              onClick={() => setHidePlayed(false)}
+              className={`text-xs tracking-wide uppercase px-4 py-1.5 transition ${
+                !hidePlayed
+                  ? "bg-arena-green/15 text-arena-green"
+                  : "text-arena-muted hover:text-arena-text"
+              }`}
+            >
+              {t("matches.show_played")}
+            </button>
+            <button
+              onClick={() => setHidePlayed(true)}
+              className={`text-xs tracking-wide uppercase px-4 py-1.5 transition border-l border-arena-border ${
+                hidePlayed
+                  ? "bg-arena-green/15 text-arena-green"
+                  : "text-arena-muted hover:text-arena-text"
+              }`}
+            >
+              {t("matches.hide_played")}
+            </button>
+          </div>
+        </div>
+      )}
 
       {view === "bracket" ? (
         <div className="mt-6">

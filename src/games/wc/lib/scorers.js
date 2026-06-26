@@ -68,27 +68,49 @@ async function fdLoadScorers() {
   return { scorers, matchday: json.season?.currentMatchday ?? null };
 }
 
-// name → photo URL (or null). Cached so the 2-min auto-refresh never refetches.
-const photoCache = new Map();
+// name → raw TheSportsDB player object (or null). Cached so neither the 2-min
+// auto-refresh nor repeated profile opens ever refetch.
+const playerCache = new Map();
 
-export async function loadScorerPhoto(name) {
+async function lookupPlayer(name) {
   if (!name) return null;
-  if (photoCache.has(name)) return photoCache.get(name);
-  let url = null;
+  if (playerCache.has(name)) return playerCache.get(name);
+  let player = null;
   try {
     const res = await fetch(
       `${SPORTSDB_BASE}/searchplayers.php?p=${encodeURIComponent(name)}`
     );
     if (res.ok) {
       const json = await res.json();
-      const p = (json.player || []).find((x) => /soccer/i.test(x.strSport));
-      url = p?.strCutout || p?.strThumb || null;
+      player = (json.player || []).find((x) => /soccer/i.test(x.strSport)) || null;
     }
   } catch (e) {
-    console.warn("[scorers] photo failed:", name, e.message);
+    console.warn("[scorers] player lookup failed:", name, e.message);
   }
-  photoCache.set(name, url);
-  return url;
+  playerCache.set(name, player);
+  return player;
+}
+
+export async function loadScorerPhoto(name) {
+  const p = await lookupPlayer(name);
+  return p?.strCutout || p?.strThumb || null;
+}
+
+// Richer profile for the player detail sheet. Returns null if nothing is found.
+export async function loadScorerProfile(name) {
+  const p = await lookupPlayer(name);
+  if (!p) return null;
+  return {
+    photo: p.strCutout || p.strThumb || null,
+    position: p.strPosition || null,
+    nationality: p.strNationality || null,
+    born: p.dateBorn || null,
+    height: p.strHeight || null,
+    weight: p.strWeight || null,
+    club: p.strTeam || null,
+    number: p.strNumber || null,
+    description: p.strDescriptionEN || null,
+  };
 }
 
 export async function loadScorers() {
