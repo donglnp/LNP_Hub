@@ -947,30 +947,47 @@ const dict = {
     ja: "今月の kcal",
   },
   "wc.hero_tagline": {
-    en: "{month} · current week",
-    vi: "{month} · Tuần hiện tại",
-    ja: "{month} · 今週",
+    en: "{month} · monthly progress",
+    vi: "{month} · Tiến độ tháng",
+    ja: "{month} · 月間進捗",
   },
-  "wc.hero_kpi_hit": {
-    en: "Weekly KPI hit.",
-    vi: "Đã đạt KPI tuần.",
-    ja: "週間KPI達成。",
+  // H1 — monthly status (source of truth, matches the Ring)
+  "wc.hero_month_hit": {
+    en: "{month} KPI hit.",
+    vi: "Đã đạt KPI {month}.",
+    ja: "{month}のKPI達成。",
   },
-  "wc.hero_keep_going": {
-    en: "Keep it up! 🔥",
-    vi: "Tiếp lửa nào! 🔥",
-    ja: "この調子で！🔥",
+  "wc.hero_month_keep": {
+    en: "Awesome! 🔥",
+    vi: "Tuyệt vời! 🔥",
+    ja: "素晴らしい！🔥",
   },
-  "wc.hero_need_part1": { en: "Need", vi: "Cần thêm", ja: "あと" },
-  "wc.hero_need_part2": {
-    en: "to hit this week's KPI.",
-    vi: "để đạt KPI tuần.",
-    ja: "で週間KPI達成。",
+  "wc.hero_month_need_part1": { en: "Need", vi: "Cần thêm", ja: "あと" },
+  "wc.hero_month_need_part2": {
+    en: "to hit {month}'s KPI.",
+    vi: "để đạt KPI {month}.",
+    ja: "で{month}のKPI達成。",
   },
-  "wc.hero_target_line": {
-    en: "Weekly target: {kpi} kcal · {days} days left this week",
-    vi: "Mục tiêu tuần: {kpi} kcal · Còn {days} ngày trong tuần",
-    ja: "週間目標: {kpi} kcal · 今週残り {days} 日",
+  // Sub-line — weekly pacing nudge
+  "wc.hero_week_pace": {
+    en: "Aim for ~{kpi} kcal this week · {days} days left",
+    vi: "Tuần này nên đạt ~{kpi} kcal · còn {days} ngày",
+    ja: "今週は~{kpi} kcal目標 · 残り {days} 日",
+  },
+  "wc.hero_week_fresh": {
+    en: "New week — target ~{kpi} kcal 💪",
+    vi: "Tuần mới — mục tiêu ~{kpi} kcal 💪",
+    ja: "新しい週 — 目標 ~{kpi} kcal 💪",
+  },
+  "wc.hero_week_keep": {
+    en: "Keep the weekly pace to chase the top-burner prize 🔥",
+    vi: "Giữ nhịp tuần để săn giải calo cao nhất 🔥",
+    ja: "週のペースを保って最多消費賞を狙おう 🔥",
+  },
+  "wc.hero_week_leftover": {
+    en: "Rest / make-up day — the week's KPI is closed; kcal still counts toward the month.",
+    vi: "Ngày nghỉ/bù — tuần KPI đã khép, kcal vẫn cộng vào tháng.",
+    ja: "休養・補填日 — 週KPIは締切。kcalは月間に加算されます。",
   },
   "wc.btn_history": { en: "History", vi: "Xem lịch sử", ja: "履歴を見る" },
   "wc.btn_rules": { en: "Rules", vi: "Cách chơi", ja: "ルール" },
@@ -1230,6 +1247,26 @@ const dict = {
     en: "※ Monthly target = weekly KPI × 4",
     vi: "※ Mục tiêu tháng = KPI tuần × 4",
     ja: "※ 月間目標 = 週間KPI × 4",
+  },
+  "wc.rules_sec_week": {
+    en: "How weeks & rest days work",
+    vi: "Cách tính tuần & ngày nghỉ",
+    ja: "週と休養日の数え方",
+  },
+  "wc.rules_week_buckets": {
+    en: "Each month has 4 weeks by date: week 1 = days 1–7, week 2 = 8–14, week 3 = 15–21, week 4 = 22–28.",
+    vi: "Mỗi tháng có 4 tuần theo ngày: tuần 1 = ngày 1–7, tuần 2 = 8–14, tuần 3 = 15–21, tuần 4 = 22–28.",
+    ja: "各月は日付で4週: 第1週=1〜7日、第2週=8〜14日、第3週=15〜21日、第4週=22〜28日。",
+  },
+  "wc.rules_week_leftover": {
+    en: "Days 29–31 are rest / make-up days — no weekly KPI of their own, but their kcal still counts toward the monthly total.",
+    vi: "Ngày 29–31 là ngày nghỉ/bù — không có KPI tuần riêng, nhưng kcal vẫn được cộng vào tổng tháng.",
+    ja: "29〜31日は休養・補填日 — 独自の週KPIはありませんが、kcalは月間合計に加算されます。",
+  },
+  "wc.rules_week_month_truth": {
+    en: "Prizes and \"KPI met\" are judged by the monthly total (= weekly KPI × 4). Weeks are just pacing milestones.",
+    vi: "Giải thưởng và việc \"đạt KPI\" xét theo tổng tháng (= KPI tuần × 4). Tuần chỉ là cột mốc để theo nhịp.",
+    ja: "賞と「KPI達成」は月間合計(=週間KPI×4)で判定します。週はペース配分の目安です。",
   },
   "wc.rules_sec_capture": {
     en: "Result tracking rules",

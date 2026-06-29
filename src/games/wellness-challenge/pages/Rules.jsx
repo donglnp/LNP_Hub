@@ -53,6 +53,14 @@ export default function Rules() {
         <p className="text-xs text-arena-muted mt-2">{t("wc.rules_kpi_note")}</p>
       </Section>
 
+      <Section icon="🗓️" title={t("wc.rules_sec_week")}>
+        <ul className="space-y-1 list-disc pl-5 text-arena-text/90">
+          <li>{t("wc.rules_week_buckets")}</li>
+          <li>{t("wc.rules_week_leftover")}</li>
+          <li>{t("wc.rules_week_month_truth")}</li>
+        </ul>
+      </Section>
+
       <Section icon="📸" title={t("wc.rules_sec_capture")}>
         <ul className="space-y-2">
           <Check>{t("wc.rules_capture_1")}</Check>

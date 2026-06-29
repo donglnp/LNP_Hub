@@ -65,34 +65,31 @@ export function monthlyKpi(gender, monthNum) {
   return weeklyKpi(gender, monthNum) * 4;
 }
 
-export function isoWeek(date) {
-  const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
-  const day = d.getUTCDay() || 7;
-  d.setUTCDate(d.getUTCDate() + 4 - day);
-  const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
-  const week = Math.ceil(((d - yearStart) / 86400000 + 1) / 7);
-  return { year: d.getUTCFullYear(), week };
+// ---- month-anchored weeks ----
+// A "week" is a bucket of days within a month, ignoring weekday:
+//   week 1 = days 1–7, week 2 = 8–14, week 3 = 15–21, week 4 = 22–28.
+// Days 29/30/31 are "leftover" days: no weekly KPI of their own (rest / make-up).
+// Their kcal still counts toward the month total (see sumKcalThisMonth).
+
+export function isLeftoverDay(date) {
+  const d = typeof date === "string" ? new Date(date) : date;
+  return d.getDate() >= 29;
 }
 
-export function weekKey(date) {
-  const { year, week } = isoWeek(date);
-  return `${year}-W${String(week).padStart(2, "0")}`;
+// Returns 1..4 for a regular week, or 0 for a leftover day (29–31).
+export function monthWeekIndex(date) {
+  const d = typeof date === "string" ? new Date(date) : date;
+  const day = d.getDate();
+  if (day >= 29) return 0;
+  return Math.floor((day - 1) / 7) + 1;
 }
 
-export function startOfIsoWeek(date) {
-  const d = new Date(date);
-  const day = d.getDay() || 7;
-  d.setDate(d.getDate() - (day - 1));
-  d.setHours(0, 0, 0, 0);
-  return d;
-}
-
-export function endOfIsoWeek(date) {
-  const start = startOfIsoWeek(date);
-  const end = new Date(start);
-  end.setDate(start.getDate() + 6);
-  end.setHours(23, 59, 59, 999);
-  return end;
+// Days remaining (inclusive of today) in the current month-week, 0 on leftover days.
+export function daysLeftInMonthWeek(now = new Date()) {
+  const ref = clampToProgram(now);
+  const idx = monthWeekIndex(ref);
+  if (idx === 0) return 0;
+  return Math.max(0, idx * 7 - ref.getDate() + 1);
 }
 
 export function formatDate(d) {
@@ -133,11 +130,6 @@ export function programProgress(now = new Date()) {
   return Math.round((done / total) * 100);
 }
 
-export function daysLeftInWeek(now = new Date()) {
-  const end = endOfIsoWeek(now);
-  return Math.max(0, Math.ceil((end - now) / 86400000));
-}
-
 export function daysUntil(date, now = new Date()) {
   return Math.max(0, Math.ceil((date - now) / 86400000));
 }
@@ -152,13 +144,23 @@ export function findDevice(id) {
 
 // ---- aggregation over entries[] ----
 
-export function sumKcalThisWeek(entries, now = new Date()) {
-  const start = startOfIsoWeek(now).getTime();
-  const end = endOfIsoWeek(now).getTime();
+// Sum of the CURRENT month-week (the days-1–7/8–14/... bucket today falls in).
+// Returns 0 on leftover days (29–31), which have no weekly KPI.
+export function sumKcalThisMonthWeek(entries, now = new Date()) {
+  const ref = clampToProgram(now);
+  const idx = monthWeekIndex(ref);
+  if (idx === 0) return 0;
+  const m = ref.getMonth();
+  const y = ref.getFullYear();
   return entries
     .filter((e) => {
-      const t = new Date(e.entry_date || e.date).getTime();
-      return t >= start && t <= end && (e.status ?? "approved") === "approved";
+      const d = new Date(e.entry_date || e.date);
+      return (
+        d.getMonth() === m &&
+        d.getFullYear() === y &&
+        monthWeekIndex(d) === idx &&
+        (e.status ?? "approved") === "approved"
+      );
     })
     .reduce((sum, e) => sum + (e.kcal || 0), 0);
 }
@@ -196,14 +198,19 @@ export function sumKcalTotal(entries) {
     .reduce((sum, e) => sum + (e.kcal || 0), 0);
 }
 
+// Counts month-weeks (4 per month) whose total kcal met that month's weekly KPI.
+// Leftover days (29–31) form no week and are ignored here.
 export function weeksMetKpi(entries, gender) {
-  const byWeek = new Map();
+  const byWeek = new Map(); // key: `${month}-${weekIdx}`
   for (const e of entries) {
     if ((e.status ?? "approved") !== "approved") continue;
     const d = new Date(e.entry_date || e.date);
     if (d < PROGRAM.startDate || d > PROGRAM.endDate) continue;
-    const key = weekKey(d);
-    const prev = byWeek.get(key) || { kcal: 0, month: d.getMonth() + 1 };
+    const weekIdx = monthWeekIndex(d);
+    if (weekIdx === 0) continue; // leftover day → no weekly KPI
+    const month = d.getMonth() + 1;
+    const key = `${month}-${weekIdx}`;
+    const prev = byWeek.get(key) || { kcal: 0, month };
     prev.kcal += e.kcal || 0;
     byWeek.set(key, prev);
   }

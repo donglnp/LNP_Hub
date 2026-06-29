@@ -7,15 +7,17 @@ import { fetchMyEntries, setMyGender, subscribeEntries } from "../lib/wellness";
 import {
   PROGRAM,
   PRIZES,
+  clampToProgram,
   currentMonthInfo,
-  daysLeftInWeek,
+  daysLeftInMonthWeek,
   daysUntil,
   findExercise,
+  isLeftoverDay,
   monthlyKpi,
   programProgress,
   programState,
   sumKcalThisMonth,
-  sumKcalThisWeek,
+  sumKcalThisMonthWeek,
   weeklyKpi,
   weeksMetKpi,
 } from "../lib/data";
@@ -55,14 +57,19 @@ export default function Dashboard() {
   const monthLabel = t(`wc.month_${monthInfo.month}`);
   const weekKpi = gender ? weeklyKpi(gender, monthInfo.month) : 0;
   const monthKpi = gender ? monthlyKpi(gender, monthInfo.month) : 0;
-  const weekKcal = sumKcalThisWeek(entries);
+  const weekKcal = sumKcalThisMonthWeek(entries);
   const monthKcal = sumKcalThisMonth(entries);
   const weeksHit = gender ? weeksMetKpi(entries, gender) : 0;
   const progressPct = programProgress();
   const isUpcoming = state === "upcoming";
   const daysToStart = isUpcoming ? daysUntil(PROGRAM.startDate) : 0;
   const recent = entries.slice(0, 3);
-  const weeklyOk = weekKpi > 0 && weekKcal >= weekKpi;
+  // Month is the source of truth (prizes & KPI). Week is only a pacing nudge.
+  const monthlyOk = monthKpi > 0 && monthKcal >= monthKpi;
+  const monthRemain = Math.max(0, monthKpi - monthKcal);
+  const onLeftoverDay = isLeftoverDay(clampToProgram(new Date()));
+  const freshWeek = weekKcal === 0;
+  const weekDaysLeft = daysLeftInMonthWeek();
   const monthlyPct =
     monthKpi > 0 ? Math.min(100, Math.round((monthKcal / monthKpi) * 100)) : 0;
 
@@ -107,28 +114,34 @@ export default function Dashboard() {
               {t("wc.hero_tagline", { month: monthLabel })}
             </p>
             <h1 className="mt-2 font-display text-3xl sm:text-4xl font-semibold leading-tight">
-              {weeklyOk ? (
+              {monthlyOk ? (
                 <>
-                  {t("wc.hero_kpi_hit")}{" "}
+                  {t("wc.hero_month_hit", { month: monthLabel })}{" "}
                   <span className="text-arena-amber">
-                    {t("wc.hero_keep_going")}
+                    {t("wc.hero_month_keep")}
                   </span>
                 </>
               ) : (
                 <>
-                  {t("wc.hero_need_part1")}{" "}
+                  {t("wc.hero_month_need_part1")}{" "}
                   <span className="text-arena-amber">
-                    {formatNum(weekKpi - weekKcal, lang)} kcal
+                    {formatNum(monthRemain, lang)} kcal
                   </span>{" "}
-                  {t("wc.hero_need_part2")}
+                  {t("wc.hero_month_need_part2", { month: monthLabel })}
                 </>
               )}
             </h1>
             <p className="mt-2 text-sm text-arena-muted">
-              {t("wc.hero_target_line", {
-                kpi: formatNum(weekKpi, lang),
-                days: daysLeftInWeek(),
-              })}
+              {onLeftoverDay
+                ? t("wc.hero_week_leftover")
+                : monthlyOk
+                ? t("wc.hero_week_keep")
+                : freshWeek
+                ? t("wc.hero_week_fresh", { kpi: formatNum(weekKpi, lang) })
+                : t("wc.hero_week_pace", {
+                    kpi: formatNum(weekKpi, lang),
+                    days: weekDaysLeft,
+                  })}
             </p>
             <div className="mt-5 flex flex-wrap gap-3">
               <Link
