@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import FlagBadge from "./FlagBadge";
 import { useT } from "../../../lib/i18n";
 
@@ -15,6 +16,16 @@ const STAGE_MAP = {
 };
 
 const ROUND_ORDER = ["r32", "r16", "qf", "sf", "f"];
+
+// Code of the winning team of a played match, or null if drawn / not played.
+function winnerCode(m) {
+  const h = m.score?.home;
+  const a = m.score?.away;
+  if (h == null || a == null) return null;
+  if (h > a) return m.home;
+  if (a > h) return m.away;
+  return null;
+}
 
 export default function Bracket({ matches, teams, onTeamClick }) {
   const { t } = useT();
@@ -35,6 +46,42 @@ export default function Bracket({ matches, teams, onTeamClick }) {
 
   const hasAny = ROUND_ORDER.some((r) => byRound[r].length > 0);
 
+  // Re-order each round (working back from the latest) so the two matches
+  // whose winners feed a given next-round match sit adjacent, in the same
+  // top/bottom order as that match's teams. This makes the elbow connectors
+  // trace real advancement instead of mere card adjacency. Matches whose
+  // winner isn't decided yet keep their kickoff order at the tail.
+  const activeRounds = ROUND_ORDER.filter((r) => byRound[r].length > 0);
+  for (let i = activeRounds.length - 2; i >= 0; i--) {
+    const prev = byRound[activeRounds[i]];
+    const next = byRound[activeRounds[i + 1]];
+    // Each next match owns two fixed slots (2k, 2k+1). Place a decided feeder
+    // into its slot so it lines up with the elbow that feeds that exact card;
+    // leave the slot empty when the feeder isn't decided yet (e.g. the next
+    // card is still TBD) so nothing shifts up into the wrong pair.
+    const ordered = new Array(next.length * 2).fill(null);
+    const used = new Set();
+    next.forEach((n, k) => {
+      [n.home, n.away].forEach((code, side) => {
+        const feeder = prev.find(
+          (p) => !used.has(p.id) && winnerCode(p) === code
+        );
+        if (feeder) {
+          ordered[k * 2 + side] = feeder;
+          used.add(feeder.id);
+        }
+      });
+    });
+    // Fill the gaps with the remaining matches, in kickoff order.
+    const leftovers = prev.filter((p) => !used.has(p.id));
+    let li = 0;
+    for (let s = 0; s < ordered.length && li < leftovers.length; s++) {
+      if (ordered[s] == null) ordered[s] = leftovers[li++];
+    }
+    while (li < leftovers.length) ordered.push(leftovers[li++]);
+    byRound[activeRounds[i]] = ordered.filter(Boolean);
+  }
+
   if (!hasAny) {
     return (
       <div className="rounded-lg border border-dashed border-arena-border p-12 text-center">
@@ -54,15 +101,19 @@ export default function Bracket({ matches, teams, onTeamClick }) {
   return (
     <div className="space-y-8">
       <div className="overflow-x-auto pb-3">
-        <div className="inline-flex gap-6 items-stretch min-w-full">
-          {ROUND_ORDER.filter((r) => byRound[r].length > 0).map((round) => (
-            <Column
-              key={round}
-              label={labels[round]}
-              matches={byRound[round]}
-              teams={teams}
-              onTeamClick={onTeamClick}
-            />
+        <div className="inline-flex items-stretch min-w-full">
+          {activeRounds.map((round, i) => (
+            <Fragment key={round}>
+              <Column
+                label={labels[round]}
+                matches={byRound[round]}
+                teams={teams}
+                onTeamClick={onTeamClick}
+              />
+              {i < activeRounds.length - 1 && (
+                <Connector count={byRound[round].length} />
+              )}
+            </Fragment>
           ))}
         </div>
       </div>
@@ -103,6 +154,50 @@ function Column({ label, matches, teams, onTeamClick }) {
             onTeamClick={onTeamClick}
           />
         ))}
+      </div>
+    </div>
+  );
+}
+
+// Elbow connectors between two adjacent rounds. Each slot spans the vertical
+// band of a pair of source matches; justify-around keeps slot centers aligned
+// with the source cells' centers, and each elbow's exit meets the next round's
+// cell center. SVG uses preserveAspectRatio=none so it stretches to any height,
+// with vector-effect keeping the stroke a constant width.
+function Connector({ count }) {
+  const slots = Math.ceil(count / 2);
+  return (
+    <div
+      className="flex flex-col gap-4 w-8 shrink-0 self-stretch text-arena-border"
+      aria-hidden="true"
+    >
+      <p className="text-[10px] tracking-[0.3em] uppercase invisible">·</p>
+      <div className="flex flex-col justify-around flex-1">
+        {Array.from({ length: slots }).map((_, i) => {
+          const paired = i * 2 + 1 < count;
+          return (
+            <div key={i} className="flex-1 min-h-[64px]">
+              <svg
+                viewBox="0 0 32 100"
+                preserveAspectRatio="none"
+                className="w-full h-full"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1"
+                vectorEffect="non-scaling-stroke"
+              >
+                <path
+                  d={
+                    paired
+                      ? "M0 25 H16 V75 H0 M16 50 H32"
+                      : "M0 25 H16 V50 H32"
+                  }
+                  vectorEffect="non-scaling-stroke"
+                />
+              </svg>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
