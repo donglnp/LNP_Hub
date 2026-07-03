@@ -296,7 +296,9 @@ export default function Dashboard() {
                     <span className="text-2xl">{ex.icon}</span>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium">
-                        {t(`wc.ex_${ex.id}`)}
+                        {e.exercise_type === "other" && e.exercise_other
+                          ? e.exercise_other
+                          : t(`wc.ex_${ex.id}`)}
                       </p>
                       <p className="text-xs text-arena-muted">
                         {dateShort} · {e.duration_min} {t("wc.minutes_short")}
