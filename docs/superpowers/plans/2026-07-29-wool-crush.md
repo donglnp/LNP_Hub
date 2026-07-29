@@ -1,5 +1,10 @@
 # Wool Crush Implementation Plan
 
+> **⚠️ SUPERSEDED (2026-07-29):** This plan described a *match-3* game, which was
+> the wrong interpretation of the requirement. The real game is a dragon
+> color-sequence game — see `docs/superpowers/specs/2026-07-29-wool-crush-design.md`
+> for the corrected spec and the implementation that actually shipped. Kept for history.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Add an endless match-3 mini-game ("Wool Crush") to LNP Hub as a self-contained game module with a pure JS engine, SVG wool tiles, and a localStorage high score.

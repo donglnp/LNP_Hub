@@ -1,18 +1,28 @@
-const KEY = "wool-crush-highscore";
+const KEY = "wool-crush-progress";
 
-export function loadHighScore() {
+export function loadBest() {
   try {
     const raw = localStorage.getItem(KEY);
-    const n = raw ? parseInt(raw, 10) : 0;
-    return Number.isFinite(n) && n > 0 ? n : 0;
+    if (!raw) return { highScore: 0, bestLevel: 0 };
+    const o = JSON.parse(raw);
+    return {
+      highScore: Number.isFinite(o?.highScore) ? o.highScore : 0,
+      bestLevel: Number.isFinite(o?.bestLevel) ? o.bestLevel : 0,
+    };
   } catch {
-    return 0;
+    return { highScore: 0, bestLevel: 0 };
   }
 }
 
-export function saveHighScore(score) {
+export function saveBest({ highScore, bestLevel }) {
   try {
-    localStorage.setItem(KEY, String(Math.max(0, Math.floor(score))));
+    localStorage.setItem(
+      KEY,
+      JSON.stringify({
+        highScore: Math.max(0, Math.floor(highScore || 0)),
+        bestLevel: Math.max(0, Math.floor(bestLevel || 0)),
+      }),
+    );
   } catch {
     /* ignore quota / unavailable storage */
   }

@@ -98,9 +98,9 @@ const dict = {
   },
   "catalog.wool_name": { en: "Wool Crush", vi: "Xếp Len", ja: "ウールクラッシュ" },
   "catalog.wool_desc": {
-    en: "Match 3 or more wool balls in this endless puzzle. Beat your best score.",
-    vi: "Xếp 3 cuộn len trở lên trong trò giải đố vô tận. Vượt qua điểm cao nhất của bạn.",
-    ja: "毛糸玉を3つ以上そろえる無限パズル。自己ベストを更新しよう。",
+    en: "Tap the dragon's colors in order before it escapes. Clear levels and beat your best.",
+    vi: "Bấm đúng thứ tự dãy màu của rồng trước khi nó thoát. Qua màn và phá kỷ lục của bạn.",
+    ja: "ドラゴンが逃げる前に色を順番にタップ。面をクリアして自己ベストを更新。",
   },
 
   // ---------- Lucky Wheel ----------
@@ -149,19 +149,28 @@ const dict = {
     ja: "ユーザー読込",
   },
 
-  // ---------- Wool Crush ----------
+  // ---------- Wool Crush (dragon color-sequence game) ----------
   "wool.brand_tag": { en: "Wool Crush", vi: "Xếp Len", ja: "ウールクラッシュ" },
   "wool.tag": { en: "◆ Wool Crush", vi: "◆ Xếp Len", ja: "◆ ウールクラッシュ" },
   "wool.title": { en: "Wool Crush", vi: "Xếp Len", ja: "ウールクラッシュ" },
   "wool.how_to": {
-    en: "Tap a wool ball, then a neighbor, to swap. Line up 3 or more to clear them. Endless — play until no moves are left.",
-    vi: "Chạm một cuộn len, rồi chạm cuộn kề bên để đổi chỗ. Xếp 3 cuộn trở lên cùng màu để xoá. Chơi tới khi hết nước đi.",
-    ja: "毛糸玉をタップし、隣をタップして入れ替え。3つ以上そろえて消そう。手がなくなるまで続く無限モード。",
+    en: "The dragon carries a row of colors. Tap the items below in that order before it flies off the screen. Clear all colors to beat the dragon and reach the next level.",
+    vi: "Con rồng mang một dãy màu. Bấm các item bên dưới đúng thứ tự đó trước khi rồng bay khỏi màn hình. Hết dãy màu là hạ được rồng và qua màn.",
+    ja: "ドラゴンは色の列を運んでいる。画面から飛び去る前に、その順番どおり下のアイテムをタップ。全色そろえるとドラゴンを倒して次の面へ。",
   },
+  "wool.level": { en: "Level", vi: "Màn", ja: "レベル" },
   "wool.score": { en: "Score", vi: "Điểm", ja: "スコア" },
-  "wool.high_score": { en: "Best", vi: "Kỷ lục", ja: "ベスト" },
+  "wool.high_score": { en: "Best score", vi: "Điểm cao nhất", ja: "ベストスコア" },
+  "wool.best_level": { en: "Best level", vi: "Màn cao nhất", ja: "最高レベル" },
+  "wool.dragon_down": { en: "Dragon down!", vi: "Hạ rồng!", ja: "ドラゴン撃破!" },
+  "wool.escaped": { en: "It escaped!", vi: "Rồng thoát!", ja: "逃げられた!" },
   "wool.game_over": { en: "Game Over", vi: "Kết thúc", ja: "ゲームオーバー" },
   "wool.final_score": { en: "Final score", vi: "Điểm cuối", ja: "最終スコア" },
+  "wool.reached_level": {
+    en: "Reached level {n}",
+    vi: "Đạt màn {n}",
+    ja: "レベル {n} 到達",
+  },
   "wool.new_record": { en: "New record!", vi: "Kỷ lục mới!", ja: "新記録！" },
   "wool.play_again": { en: "Play again", vi: "Chơi lại", ja: "もう一度" },
 
