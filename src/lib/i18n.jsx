@@ -96,6 +96,12 @@ const dict = {
     vi: "Quay vòng quay thử vận may.",
     ja: "ホイールを回して運試し。",
   },
+  "catalog.wool_name": { en: "Wool Crush", vi: "Xếp Len", ja: "ウールクラッシュ" },
+  "catalog.wool_desc": {
+    en: "Match 3 or more wool balls in this endless puzzle. Beat your best score.",
+    vi: "Xếp 3 cuộn len trở lên trong trò giải đố vô tận. Vượt qua điểm cao nhất của bạn.",
+    ja: "毛糸玉を3つ以上そろえる無限パズル。自己ベストを更新しよう。",
+  },
 
   // ---------- Lucky Wheel ----------
   "lw.brand_tag": { en: "Lucky", vi: "May mắn", ja: "ラッキー" },
@@ -142,6 +148,22 @@ const dict = {
     vi: "Lấy danh sách user",
     ja: "ユーザー読込",
   },
+
+  // ---------- Wool Crush ----------
+  "wool.brand_tag": { en: "Wool Crush", vi: "Xếp Len", ja: "ウールクラッシュ" },
+  "wool.tag": { en: "◆ Wool Crush", vi: "◆ Xếp Len", ja: "◆ ウールクラッシュ" },
+  "wool.title": { en: "Wool Crush", vi: "Xếp Len", ja: "ウールクラッシュ" },
+  "wool.how_to": {
+    en: "Tap a wool ball, then a neighbor, to swap. Line up 3 or more to clear them. Endless — play until no moves are left.",
+    vi: "Chạm một cuộn len, rồi chạm cuộn kề bên để đổi chỗ. Xếp 3 cuộn trở lên cùng màu để xoá. Chơi tới khi hết nước đi.",
+    ja: "毛糸玉をタップし、隣をタップして入れ替え。3つ以上そろえて消そう。手がなくなるまで続く無限モード。",
+  },
+  "wool.score": { en: "Score", vi: "Điểm", ja: "スコア" },
+  "wool.high_score": { en: "Best", vi: "Kỷ lục", ja: "ベスト" },
+  "wool.game_over": { en: "Game Over", vi: "Kết thúc", ja: "ゲームオーバー" },
+  "wool.final_score": { en: "Final score", vi: "Điểm cuối", ja: "最終スコア" },
+  "wool.new_record": { en: "New record!", vi: "Kỷ lục mới!", ja: "新記録！" },
+  "wool.play_again": { en: "Play again", vi: "Chơi lại", ja: "もう一度" },
 
   // ---------- Nav ----------
   "nav.dashboard": { en: "Dashboard", vi: "Tổng quan", ja: "ダッシュボード" },
@@ -1087,6 +1109,11 @@ const dict = {
     en: "History · {count} sessions · {kcal} kcal",
     vi: "Lịch sử · {count} buổi · {kcal} kcal",
     ja: "履歴 · {count} 回 · {kcal} kcal",
+  },
+  "wc.history_month_meta": {
+    en: "{count} sessions · {kcal} kcal",
+    vi: "{count} buổi · {kcal} kcal",
+    ja: "{count} 回 · {kcal} kcal",
   },
   "wc.history_title": {
     en: "Training history",

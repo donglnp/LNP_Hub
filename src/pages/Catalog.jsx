@@ -61,6 +61,14 @@ export default function Catalog() {
       accent: "red",
     },
     {
+      slug: "wool-crush",
+      name: t("catalog.wool_name"),
+      description: t("catalog.wool_desc"),
+      path: "/wool-crush",
+      icon: "🧶",
+      accent: "amber",
+    },
+    {
       slug: "coworking-day",
       name: t("catalog.coworking_name"),
       description: t("catalog.coworking_desc"),
